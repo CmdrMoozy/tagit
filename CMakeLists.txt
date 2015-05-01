@@ -39,6 +39,16 @@ set(tagit_LIBRARIES
 
 )
 
+# Build libvrfy, if applicable.
+
+if(CMAKE_BUILD_TYPE_LOWER MATCHES debug)
+	add_subdirectory(vrfy)
+endif()
+
 # Add our targets.
 
 add_subdirectory(src/tagit)
+
+if(CMAKE_BUILD_TYPE_LOWER MATCHES debug)
+	add_subdirectory(src/test)
+endif()
