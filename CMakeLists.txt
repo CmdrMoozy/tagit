@@ -18,6 +18,7 @@ string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
 # Find our dependencies.
 
 find_package(Boost REQUIRED)
+find_package(Taglib REQUIRED)
 
 # Setup our compile flags.
 
@@ -34,7 +35,7 @@ include_directories("src")
 
 set(tagit_LIBRARIES
 
-
+	${Taglib_LIBRARIES}
 
 )
 
