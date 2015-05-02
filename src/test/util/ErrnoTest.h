@@ -16,25 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
-
-#include <QApplication>
+#ifndef TEST_UTIL_ERRNO_TEST_H
+#define TEST_UTIL_ERRNO_TEST_H
 
 #include <Vrfy/Vrfy.h>
 
-#include "test/fs/EnvironmentTest.h"
-#include "test/util/ErrnoTest.h"
-
-int main(int argc, char **argv)
+namespace tagit_test
 {
-	QApplication app(argc, argv, false);
+namespace util
+{
+class ErrnoTest : public vrfy::Test
+{
+public:
+	ErrnoTest() = default;
+	virtual ~ErrnoTest() = default;
 
-	vrfy::Tests tests;
-	tests.add<tagit_test::fs::EnvironmentTest>()
-	        .add<tagit_test::util::ErrnoTest>()
-	        .execute();
-
-	return 0;
-
-	return EXIT_SUCCESS;
+	virtual void test() override;
+};
 }
+}
+
+#endif

@@ -7,6 +7,9 @@ set(test_SOURCES
 	fs/EnvironmentTest.cpp
 	fs/EnvironmentTest.h
 
+	util/ErrnoTest.cpp
+	util/ErrnoTest.h
+
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/vrfy/src)
