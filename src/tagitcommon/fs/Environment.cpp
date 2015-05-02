@@ -16,22 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Environment.h"
+
 #include <cstdlib>
 
-#include <QApplication>
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
 
-#include <Vrfy/Vrfy.h>
-
-#include "test/fs/EnvironmentTest.h"
-
-int main(int argc, char **argv)
+namespace tagit
 {
-	QApplication app(argc, argv, false);
-
-	vrfy::Tests tests;
-	tests.add<tagit_test::fs::EnvironmentTest>().execute();
-
-	return 0;
-
-	return EXIT_SUCCESS;
+namespace fs
+{
+std::vector<std::string> getSystemPath()
+{
+	std::string path(getenv("PATH"));
+	std::vector<std::string> components;
+	boost::algorithm::split(components, path, boost::is_any_of(":"));
+	return components;
+}
+}
 }

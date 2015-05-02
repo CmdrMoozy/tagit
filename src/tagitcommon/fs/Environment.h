@@ -16,22 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
+#ifndef TAGITCOMMON_FS_ENVIRONMENT_H
+#define TAGITCOMMON_FS_ENVIRONMENT_H
 
-#include <QApplication>
+#include <string>
+#include <vector>
 
-#include <Vrfy/Vrfy.h>
-
-#include "test/fs/EnvironmentTest.h"
-
-int main(int argc, char **argv)
+namespace tagit
 {
-	QApplication app(argc, argv, false);
-
-	vrfy::Tests tests;
-	tests.add<tagit_test::fs::EnvironmentTest>().execute();
-
-	return 0;
-
-	return EXIT_SUCCESS;
+namespace fs
+{
+/*!
+ * This function returns the contents of the operating system's executable
+ * path, split up into separate strings.
+ *
+ * \return The executable path components.
+ */
+std::vector<std::string> getSystemPath();
 }
+}
+
+#endif

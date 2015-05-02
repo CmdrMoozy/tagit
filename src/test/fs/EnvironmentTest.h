@@ -16,22 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
-
-#include <QApplication>
+#ifndef TEST_FS_ENVIRONMENT_TEST_H
+#define TEST_FS_ENVIRONMENT_TEST_H
 
 #include <Vrfy/Vrfy.h>
 
-#include "test/fs/EnvironmentTest.h"
-
-int main(int argc, char **argv)
+namespace tagit_test
 {
-	QApplication app(argc, argv, false);
+namespace fs
+{
+class EnvironmentTest : public vrfy::Test
+{
+public:
+	EnvironmentTest() = default;
+	virtual ~EnvironmentTest() = default;
 
-	vrfy::Tests tests;
-	tests.add<tagit_test::fs::EnvironmentTest>().execute();
-
-	return 0;
-
-	return EXIT_SUCCESS;
+	virtual void test() override;
+};
 }
+}
+
+#endif

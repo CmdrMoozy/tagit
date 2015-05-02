@@ -4,6 +4,9 @@ set(test_SOURCES
 
 	TagItTest.cpp
 
+	fs/EnvironmentTest.cpp
+	fs/EnvironmentTest.h
+
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/vrfy/src)
