@@ -16,28 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Environment.h"
+#include "Errno.h"
 
-#include <cstdlib>
-
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
+#include <cerrno>
+#include <cstring>
+#include <stdexcept>
 
 namespace tagit
 {
-namespace fs
+namespace util
 {
-std::vector<std::string> getSystemPath()
+std::string getErrnoError(boost::optional<int> error,
+                          const std::string &defaultMessage)
 {
-	std::string path(getenv("PATH"));
-	std::vector<std::string> components;
-	boost::algorithm::split(components, path, boost::is_any_of(":"));
-	return components;
+	if(!error)
+		error = errno;
+
+	std::string errorString = defaultMessage;
+
+	char buf[1024];
+	return std::string(strerror_r(*error, buf, 1024));
 }
 
-std::string which(const std::string &command)
+void throwErrnoError(boost::optional<int> error,
+                     const std::string &defaultMessage)
 {
-	return command;
+	throw std::runtime_error(getErrnoError(error, defaultMessage));
 }
 }
 }

@@ -33,6 +33,15 @@ namespace fs
  * \return The executable path components.
  */
 std::vector<std::string> getSystemPath();
+
+/*!
+ * This function is analogous to the standard UNIX `which` command, which
+ * returns the path to a given executable in the environment's PATH.
+ *
+ * \param command The command to search for.
+ * \return The path to the given command.
+ */
+std::string which(const std::string &command);
 }
 }
 

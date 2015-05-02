@@ -16,28 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Environment.h"
+#ifndef TAGITCOMMON_FS_FS_H
+#define TAGITCOMMON_FS_FS_H
 
-#include <cstdlib>
-
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
+#include <string>
 
 namespace tagit
 {
 namespace fs
 {
-std::vector<std::string> getSystemPath()
-{
-	std::string path(getenv("PATH"));
-	std::vector<std::string> components;
-	boost::algorithm::split(components, path, boost::is_any_of(":"));
-	return components;
+/*!
+ * This function returns the path the given symlink points to, or the given
+ * path unchanged if it isn' a symlink.
+ *
+ * \param path The path to de-symlink.
+ * \return The dereferenced path.
+ */
+std::string stripSymlink(const std::string &path);
+
+/*!
+ * \param path The path to inspect.
+ * \return Whether or not the given path is a file.
+ */
+bool isFile(const std::string &path);
+
+/*!
+ * \param path Te path to inspect.
+ * \return Whether or not the given path is executable.
+ */
+bool isExecutable(const std::string &path);
+}
 }
 
-std::string which(const std::string &command)
-{
-	return command;
-}
-}
-}
+#endif

@@ -5,6 +5,11 @@ set(tagitcommon_SOURCES
 
 	fs/Environment.cpp
 	fs/Environment.h
+	fs/FS.cpp
+	fs/FS.h
+
+	util/Errno.cpp
+	util/Errno.h
 
 )
 
