@@ -23,6 +23,8 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
+#include "tagitcommon/fs/FS.h"
+
 namespace tagit
 {
 namespace fs
@@ -35,9 +37,28 @@ std::vector<std::string> getSystemPath()
 	return components;
 }
 
-std::string which(const std::string &command)
+boost::optional<std::string> which(const std::string &command)
 {
-	return command;
+	if(command.find('/') != std::string::npos)
+	{
+		if(isFile(command) && isExecutable(command))
+			return command;
+
+		return boost::none;
+	}
+
+	std::vector<std::string> components = getSystemPath();
+	for(const std::string &component : components)
+	{
+		std::string path = component;
+		if(path[path.length() - 1] != '/')
+			path.append("/");
+		path.append(command);
+		if(isFile(path) && isExecutable(path))
+			return path;
+	}
+
+	return boost::none;
 }
 }
 }
