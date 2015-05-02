@@ -16,16 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
+#include "MainWindow.h"
 
-#include "tagitcommon/MainWindow.h"
-
-int main(int argc, char **argv)
+namespace tagit
 {
-	QApplication app(argc, argv);
-
-	tagit::MainWindow w;
-	w.show();
-
-	return app.exec();
+MainWindow::MainWindow() : QMainWindow(nullptr, 0)
+{
+	setWindowTitle(tr("TagIt"));
+}
 }

@@ -16,16 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
+#ifndef TAGITCOMMON_MAIN_WINDOW_H
+#define TAGITCOMMON_MAIN_WINDOW_H
 
-#include "tagitcommon/MainWindow.h"
+#include <QMainWindow>
 
-int main(int argc, char **argv)
+namespace tagit
 {
-	QApplication app(argc, argv);
+class MainWindow : public QMainWindow
+{
+public:
+	MainWindow();
+	MainWindow(const MainWindow &) = delete;
 
-	tagit::MainWindow w;
-	w.show();
+	virtual ~MainWindow() = default;
 
-	return app.exec();
+	MainWindow &operator=(const MainWindow &) = delete;
+};
 }
+
+#endif

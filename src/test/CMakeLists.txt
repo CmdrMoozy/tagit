@@ -9,4 +9,5 @@ set(test_SOURCES
 include_directories(${CMAKE_SOURCE_DIR}/vrfy/src)
 
 add_executable(tagit-test ${test_SOURCES})
-target_link_libraries(tagit-test ${tagit_LIBRARIES} ${Vrfy_LIBS})
+target_link_libraries(tagit-test ${tagit_LIBRARIES} tagitcommon ${Vrfy_LIBS})
+qt5_use_modules(tagit-test ${tagit_QT5_MODULES})

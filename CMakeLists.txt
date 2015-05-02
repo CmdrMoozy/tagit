@@ -17,13 +17,20 @@ string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
 
 # Find our dependencies.
 
+set(CMAKE_AUTOMOC ON)
+
 find_package(Boost REQUIRED)
 find_package(Taglib REQUIRED)
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5Widgets REQUIRED)
 
 # Setup our compile flags.
 
 include(${PROJECT_SOURCE_DIR}/cmake/SetFlags.cmake)
 tagitSetCompileFlags()
+
+add_definitions(-DQT_NO_KEYWORDS)
 
 if(CMAKE_BUILD_TYPE_LOWER MATCHES debug)
 	add_definitions(-DTAGIT_DEBUG)
@@ -36,6 +43,17 @@ include_directories("src")
 set(tagit_LIBRARIES
 
 	${Taglib_LIBRARIES}
+	${Qt5Core_LIBRARIES}
+	${Qt5Gui_LIBRARIES}
+	${Qt5Widgets_LIBRARIES}
+
+)
+
+set(tagit_QT5_MODULES
+
+	Core
+	Gui
+	Widgets
 
 )
 
@@ -47,6 +65,7 @@ endif()
 
 # Add our targets.
 
+add_subdirectory(src/tagitcommon)
 add_subdirectory(src/tagit)
 
 if(CMAKE_BUILD_TYPE_LOWER MATCHES debug)
