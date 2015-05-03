@@ -19,6 +19,7 @@
 #ifndef TAGITCOMMON_FS_FS_H
 #define TAGITCOMMON_FS_FS_H
 
+#include <cstdint>
 #include <string>
 
 namespace tagit
@@ -48,6 +49,12 @@ void createFile(const std::string &path);
  * \param link The path to the newly created symlink.
  */
 void createSymlink(const std::string &target, const std::string &link);
+
+/*!
+ * \param path The path to examine.
+ * \return The permission mode (setuid, setgid, sticky, owner, group, others).
+ */
+uintmax_t getMode(const std::string &path);
 
 /*!
  * \param path The path to inspect.

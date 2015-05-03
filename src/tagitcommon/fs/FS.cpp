@@ -23,8 +23,8 @@
 
 #include <unistd.h>
 #include <linux/limits.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 #include <boost/filesystem.hpp>
 
@@ -79,6 +79,18 @@ void createSymlink(const std::string &target, const std::string &link)
 	int ret = symlink(target.c_str(), link.c_str());
 	if(ret != 0)
 		util::throwErrnoError();
+}
+
+uintmax_t getMode(const std::string &path)
+{
+	struct stat stats;
+	int ret = stat(path.c_str(), &stats);
+	if(ret != 0)
+		throw std::runtime_error("Getting path mode failed.");
+
+	uintmax_t mode = static_cast<uintmax_t>(stats.st_mode);
+	return mode &
+	       (S_ISUID | S_ISGID | S_ISVTX | S_IRWXU | S_IRWXG | S_IRWXO);
 }
 
 bool isFile(const std::string &path)
