@@ -6,6 +6,8 @@ set(test_SOURCES
 
 	fs/EnvironmentTest.cpp
 	fs/EnvironmentTest.h
+	fs/FSTest.cpp
+	fs/FSTest.h
 	fs/TemporaryStorageTest.cpp
 	fs/TemporaryStorageTest.h
 
