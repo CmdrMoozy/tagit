@@ -44,6 +44,12 @@ std::string stripSymlink(const std::string &path);
 void createFile(const std::string &path);
 
 /*!
+ * \param target The target path the symlink will link to.
+ * \param link The path to the newly created symlink.
+ */
+void createSymlink(const std::string &target, const std::string &link);
+
+/*!
  * \param path The path to inspect.
  * \return Whether or not the given path is a file.
  */

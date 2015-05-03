@@ -27,6 +27,21 @@
 
 namespace
 {
+void testStripSymlink()
+{
+	tagit::fs::TemporaryStorage temp(
+	        tagit::fs::TemporaryStorageType::DIRECTORY);
+	boost::filesystem::path rootPath(temp.getPath());
+	boost::filesystem::path filePath = rootPath / "file";
+	boost::filesystem::path symlinkPath = rootPath / "symlink";
+
+	tagit::fs::createFile(filePath.string());
+	tagit::fs::createSymlink(filePath.string(), symlinkPath.string());
+
+	std::string resolved = tagit::fs::stripSymlink(symlinkPath.string());
+	vrfy::assert::assertEquals(symlinkPath.string(), resolved);
+}
+
 void testCreateFile()
 {
 	tagit::fs::TemporaryStorage temp(tagit::fs::TemporaryStorageType::FILE);
@@ -43,6 +58,23 @@ void testCreateFile()
 	        boost::filesystem::path(temp.getPath())));
 	vrfy::assert::assertTrue(boost::filesystem::is_regular_file(
 	        boost::filesystem::path(temp.getPath())));
+}
+
+void testCreateSymlink()
+{
+	tagit::fs::TemporaryStorage temp(
+	        tagit::fs::TemporaryStorageType::DIRECTORY);
+	boost::filesystem::path rootPath(temp.getPath());
+	boost::filesystem::path filePath = rootPath / "file";
+	boost::filesystem::path symlinkPath = rootPath / "symlink";
+
+	tagit::fs::createFile(filePath.string());
+	tagit::fs::createSymlink(filePath.string(), symlinkPath.string());
+
+	vrfy::assert::assertTrue(boost::filesystem::exists(filePath));
+	vrfy::assert::assertTrue(boost::filesystem::is_regular_file(filePath));
+	vrfy::assert::assertTrue(boost::filesystem::exists(symlinkPath));
+	vrfy::assert::assertTrue(boost::filesystem::is_symlink(symlinkPath));
 }
 
 void testIsFile()
@@ -67,7 +99,9 @@ namespace fs
 {
 void FSTest::test()
 {
+	testStripSymlink();
 	testCreateFile();
+	testCreateSymlink();
 	testIsFile();
 }
 }

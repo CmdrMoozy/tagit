@@ -68,6 +68,19 @@ void createFile(const std::string &path)
 		throw std::runtime_error("File creation failed.");
 }
 
+void createSymlink(const std::string &target, const std::string &link)
+{
+	if(!boost::filesystem::exists(boost::filesystem::path(target)))
+		throw std::runtime_error("Symlink target doesn't exist.");
+
+	if(boost::filesystem::exists(boost::filesystem::path(link)))
+		throw std::runtime_error("Symlink already exists.");
+
+	int ret = symlink(target.c_str(), link.c_str());
+	if(ret != 0)
+		util::throwErrnoError();
+}
+
 bool isFile(const std::string &path)
 {
 	std::string stripped = stripSymlink(path);
