@@ -16,31 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
+#ifndef TAGITCOMMON_UTIL_SCOPE_EXIT_H
+#define TAGITCOMMON_UTIL_SCOPE_EXIT_H
 
-#include <QApplication>
+#include <functional>
 
-#include <Vrfy/Vrfy.h>
-
-#include "test/fs/EnvironmentTest.h"
-#include "test/fs/FSTest.h"
-#include "test/fs/TemporaryStorageTest.h"
-#include "test/util/ErrnoTest.h"
-#include "test/util/ScopeExitTest.h"
-
-int main(int argc, char **argv)
+namespace tagit
 {
-	QApplication app(argc, argv, false);
+namespace util
+{
+class ScopeExit
+{
+public:
+	/*!
+	 * \param f The function to execute on destruction.
+	 */
+	ScopeExit(const std::function<void()> &f);
 
-	vrfy::Tests tests;
-	tests.add<tagit_test::fs::EnvironmentTest>()
-	        .add<tagit_test::fs::FSTest>()
-	        .add<tagit_test::fs::TemporaryStorageTest>()
-	        .add<tagit_test::util::ErrnoTest>()
-	        .add<tagit_test::util::ScopeExitTest>()
-	        .execute();
+	/*!
+	 * This destructor executes the function specified in the constructor.
+	 * (Generally, this executes the given function when this object
+	 * leaves the scope it was constructed in.)
+	 */
+	~ScopeExit();
 
-	return 0;
-
-	return EXIT_SUCCESS;
+private:
+	std::function<void()> function;
+};
 }
+}
+
+#endif

@@ -13,6 +13,8 @@ set(test_SOURCES
 
 	util/ErrnoTest.cpp
 	util/ErrnoTest.h
+	util/ScopeExitTest.cpp
+	util/ScopeExitTest.h
 
 )
 

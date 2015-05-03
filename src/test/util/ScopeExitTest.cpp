@@ -16,31 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
+#include "ScopeExitTest.h"
 
-#include <QApplication>
+#include "tagitcommon/util/ScopeExit.h"
 
-#include <Vrfy/Vrfy.h>
-
-#include "test/fs/EnvironmentTest.h"
-#include "test/fs/FSTest.h"
-#include "test/fs/TemporaryStorageTest.h"
-#include "test/util/ErrnoTest.h"
-#include "test/util/ScopeExitTest.h"
-
-int main(int argc, char **argv)
+namespace tagit_test
 {
-	QApplication app(argc, argv, false);
+namespace util
+{
+void ScopeExitTest::test()
+{
+	bool executed = false;
+	auto fn = [&executed]()
+	{
+		executed = true;
+	};
 
-	vrfy::Tests tests;
-	tests.add<tagit_test::fs::EnvironmentTest>()
-	        .add<tagit_test::fs::FSTest>()
-	        .add<tagit_test::fs::TemporaryStorageTest>()
-	        .add<tagit_test::util::ErrnoTest>()
-	        .add<tagit_test::util::ScopeExitTest>()
-	        .execute();
+	{
+		tagit::util::ScopeExit scopExit(fn);
+	}
 
-	return 0;
-
-	return EXIT_SUCCESS;
+	vrfy::assert::assertTrue(executed);
+}
+}
 }

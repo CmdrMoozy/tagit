@@ -53,6 +53,10 @@ void testGetSystemPath()
 		                           EXPECTED_COMPONENTS[i]);
 	}
 }
+
+void testWhich()
+{
+}
 }
 
 namespace tagit_test
@@ -62,6 +66,7 @@ namespace fs
 void EnvironmentTest::test()
 {
 	testGetSystemPath();
+	testWhich();
 }
 }
 }
