@@ -35,6 +35,15 @@ namespace fs
 std::string stripSymlink(const std::string &path);
 
 /*!
+ * This function will create a new, empty file at the given path. If the given
+ * path already exists, or some error occurs, then an exception will be
+ * thrown.
+ *
+ * \param path The path of the file to create.
+ */
+void createFile(const std::string &path);
+
+/*!
  * \param path The path to inspect.
  * \return Whether or not the given path is a file.
  */

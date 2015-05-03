@@ -19,7 +19,7 @@ string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Boost REQUIRED)
+find_package(Boost REQUIRED filesystem system)
 find_package(Taglib REQUIRED)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
@@ -42,6 +42,8 @@ include_directories("src")
 
 set(tagit_LIBRARIES
 
+	${Boost_SYSTEM_LIBRARY}
+	${Boost_FILESYSTEM_LIBRARY}
 	${Taglib_LIBRARIES}
 	${Qt5Core_LIBRARIES}
 	${Qt5Gui_LIBRARIES}

@@ -7,6 +7,8 @@ set(tagitcommon_SOURCES
 	fs/Environment.h
 	fs/FS.cpp
 	fs/FS.h
+	fs/TemporaryStorage.cpp
+	fs/TemporaryStorage.h
 
 	util/Errno.cpp
 	util/Errno.h

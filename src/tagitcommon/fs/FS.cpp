@@ -18,10 +18,15 @@
 
 #include "FS.h"
 
+#include <fstream>
+#include <stdexcept>
+
 #include <unistd.h>
 #include <linux/limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
+#include <boost/filesystem.hpp>
 
 #include "tagitcommon/util/Errno.h"
 
@@ -46,6 +51,21 @@ std::string stripSymlink(const std::string &path)
 		                static_cast<std::string::size_type>(length));
 	}
 	return stripped;
+}
+
+void createFile(const std::string &path)
+{
+	if(boost::filesystem::exists(boost::filesystem::path(path)))
+		throw std::runtime_error("Path already exists.");
+
+	std::ofstream stream(path.c_str(),
+	                     std::ios_base::out | std::ios_base::binary);
+	if(!stream.is_open())
+		throw std::runtime_error("File creation failed.");
+	stream.close();
+
+	if(!boost::filesystem::exists(boost::filesystem::path(path)))
+		throw std::runtime_error("File creation failed.");
 }
 
 bool isFile(const std::string &path)
