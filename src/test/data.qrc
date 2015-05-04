@@ -8,5 +8,6 @@
 		<file>data/mp3-v0.mp3</file>
 		<file>data/mp3-v2.mp3</file>
 		<file>data/vorbis.ogg</file>
+		<file>data/wav.wav</file>
 	</qresource>
 </RCC>
