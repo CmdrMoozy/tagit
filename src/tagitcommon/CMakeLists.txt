@@ -3,6 +3,11 @@ set(tagitcommon_SOURCES
 	MainWindow.cpp
 	MainWindow.h
 
+	audio/AudioFile.cpp
+	audio/AudioFile.h
+	audio/WaveFile.cpp
+	audio/WaveFile.h
+
 	fs/Environment.cpp
 	fs/Environment.h
 	fs/FS.cpp
