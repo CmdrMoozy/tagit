@@ -19,6 +19,7 @@
 #ifndef TAGITCOMMON_FS_FS_H
 #define TAGITCOMMON_FS_FS_H
 
+#include <cstddef>
 #include <cstdint>
 #include <string>
 
@@ -49,6 +50,12 @@ void createFile(const std::string &path);
  * \param link The path to the newly created symlink.
  */
 void createSymlink(const std::string &target, const std::string &link);
+
+/*!
+ * \param file The path to the file to examine.
+ * \return The size of the given file, in bytes.
+ */
+std::size_t getSize(const std::string &file);
 
 /*!
  * \param path The path to examine.

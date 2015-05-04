@@ -18,7 +18,9 @@
 
 #include "FSTest.h"
 
+#include <fstream>
 #include <functional>
+#include <sstream>
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -79,6 +81,34 @@ void testCreateSymlink()
 	vrfy::assert::assertTrue(boost::filesystem::is_regular_file(filePath));
 	vrfy::assert::assertTrue(boost::filesystem::exists(symlinkPath));
 	vrfy::assert::assertTrue(boost::filesystem::is_symlink(symlinkPath));
+}
+
+void testGetSize()
+{
+	tagit::fs::TemporaryStorage temp(tagit::fs::TemporaryStorageType::FILE);
+
+	for(int i = 1; i <= 10; ++i)
+	{
+		std::ostringstream oss;
+		for(int v = 0; v < i * 100; ++v)
+			oss << v;
+		oss.flush();
+		std::string contents = oss.str();
+		std::size_t expected = static_cast<std::size_t>(oss.tellp());
+		vrfy::assert::assertEquals(expected, contents.length());
+
+		std::ofstream out(temp.getPath(),
+		                  std::ios_base::out | std::ios_base::binary |
+		                          std::ios_base::trunc);
+		vrfy::assert::assertTrue(out.is_open());
+		out.write(contents.c_str(),
+		          static_cast<std::streamsize>(contents.length()));
+		out.flush();
+		out.close();
+
+		vrfy::assert::assertEquals(expected,
+		                           tagit::fs::getSize(temp.getPath()));
+	}
 }
 
 void testGetMode()
@@ -153,6 +183,7 @@ void FSTest::test()
 	testStripSymlink();
 	testCreateFile();
 	testCreateSymlink();
+	testGetSize();
 	testGetMode();
 	testIsFile();
 	testIsExecutable();

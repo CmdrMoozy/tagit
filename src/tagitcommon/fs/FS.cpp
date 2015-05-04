@@ -81,6 +81,22 @@ void createSymlink(const std::string &target, const std::string &link)
 		util::throwErrnoError();
 }
 
+std::size_t getSize(const std::string &file)
+{
+	std::string stripped = stripSymlink(file);
+	if(stripped.length() == 0)
+		throw std::runtime_error("Invalid file path specified.");
+
+	struct stat stats;
+	int ret = stat(stripped.c_str(), &stats);
+	if(ret != 0)
+		throw std::runtime_error("Getting file size failed.");
+	if(!S_ISREG(stats.st_mode))
+		throw std::runtime_error("The specified path isn't a file.");
+
+	return static_cast<std::size_t>(stats.st_size);
+}
+
 uintmax_t getMode(const std::string &path)
 {
 	struct stat stats;
