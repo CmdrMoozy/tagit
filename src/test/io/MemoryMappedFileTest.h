@@ -16,33 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
-
-#include <QApplication>
+#ifndef TEST_IO_MEMORY_MAPPED_FILE_TEST_H
+#define TEST_IO_MEMORY_MAPPED_FILE_TEST_H
 
 #include <Vrfy/Vrfy.h>
 
-#include "test/fs/EnvironmentTest.h"
-#include "test/fs/FSTest.h"
-#include "test/fs/TemporaryStorageTest.h"
-#include "test/io/MemoryMappedFileTest.h"
-#include "test/util/ErrnoTest.h"
-#include "test/util/ScopeExitTest.h"
-
-int main(int argc, char **argv)
+namespace tagit_test
 {
-	QApplication app(argc, argv, false);
+namespace io
+{
+class MemoryMappedFileTest : public vrfy::Test
+{
+public:
+	MemoryMappedFileTest() = default;
+	virtual ~MemoryMappedFileTest() = default;
 
-	vrfy::Tests tests;
-	tests.add<tagit_test::fs::EnvironmentTest>()
-	        .add<tagit_test::fs::FSTest>()
-	        .add<tagit_test::fs::TemporaryStorageTest>()
-	        .add<tagit_test::io::MemoryMappedFileTest>()
-	        .add<tagit_test::util::ErrnoTest>()
-	        .add<tagit_test::util::ScopeExitTest>()
-	        .execute();
-
-	return 0;
-
-	return EXIT_SUCCESS;
+	virtual void test() override;
+};
 }
+}
+
+#endif

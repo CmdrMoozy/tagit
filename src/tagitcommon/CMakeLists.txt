@@ -10,6 +10,9 @@ set(tagitcommon_SOURCES
 	fs/TemporaryStorage.cpp
 	fs/TemporaryStorage.h
 
+	io/MemoryMappedFile.cpp
+	io/MemoryMappedFile.h
+
 	util/Errno.cpp
 	util/Errno.h
 	util/ScopeExit.cpp

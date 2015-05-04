@@ -17,6 +17,9 @@ set(test_SOURCES
 	fs/TemporaryStorageTest.cpp
 	fs/TemporaryStorageTest.h
 
+	io/MemoryMappedFileTest.cpp
+	io/MemoryMappedFileTest.h
+
 	util/ErrnoTest.cpp
 	util/ErrnoTest.h
 	util/ScopeExitTest.cpp
