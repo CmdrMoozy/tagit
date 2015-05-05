@@ -22,10 +22,34 @@
 #include <memory>
 #include <string>
 
+#include <boost/variant.hpp>
+#include <boost/mpl/vector.hpp>
+#include <boost/optional/optional.hpp>
+
+#include "tagitcommon/audio/WaveFile.h"
+
 namespace tagit
 {
 namespace audio
 {
+namespace detail
+{
+typedef boost::mpl::vector<tagit::audio::WaveFile> Sequence_t;
+typedef boost::make_variant_over<Sequence_t>::type Variant_t;
+typedef boost::optional<Variant_t> OptVariant_t;
+
+void audioFileFactory(OptVariant_t &file, const std::string &path);
+
+class AudioFileImpl
+{
+public:
+	AudioFileImpl(const std::string &path);
+
+private:
+	OptVariant_t file;
+};
+}
+
 class AudioFile
 {
 public:
@@ -38,8 +62,7 @@ public:
 	AudioFile &operator=(const AudioFile &other);
 
 private:
-	class Impl;
-	std::unique_ptr<Impl> impl;
+	std::unique_ptr<detail::AudioFileImpl> impl;
 };
 }
 }

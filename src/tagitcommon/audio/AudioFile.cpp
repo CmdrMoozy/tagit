@@ -20,13 +20,8 @@
 
 #include <utility>
 
-#include <boost/variant.hpp>
 #include <boost/mpl/begin_end.hpp>
 #include <boost/mpl/next_prior.hpp>
-#include <boost/mpl/vector.hpp>
-#include <boost/optional/optional.hpp>
-
-#include "tagitcommon/audio/WaveFile.h"
 
 namespace
 {
@@ -34,16 +29,13 @@ namespace
 static_assert(false, "boost::variant must support type sequences.");
 #endif
 
-typedef boost::mpl::vector<tagit::audio::WaveFile> Sequence_t;
-typedef boost::make_variant_over<Sequence_t>::type Variant_t;
-typedef boost::optional<Variant_t> OptVariant_t;
-
 struct CallFactoryFunction
 {
 	template <typename T>
-	static OptVariant_t &&call(const std::string &path)
+	static tagit::audio::detail::OptVariant_t &&
+	call(const std::string &path)
 	{
-		OptVariant_t variant = boost::none;
+		tagit::audio::detail::OptVariant_t variant = boost::none;
 		boost::optional<T> opt = T::factory(path);
 		if(!!opt)
 			variant = std::move(*opt);
@@ -53,10 +45,12 @@ struct CallFactoryFunction
 
 template <typename Begin, typename End> struct FactoryForEachImpl
 {
-	static void factory(OptVariant_t &file, const std::string &path)
+	static void factory(tagit::audio::detail::OptVariant_t &file,
+	                    const std::string &path)
 	{
-		OptVariant_t ret = CallFactoryFunction::template call<
-		        typename Begin::type>(path);
+		tagit::audio::detail::OptVariant_t ret =
+		        CallFactoryFunction::template call<
+		                typename Begin::type>(path);
 		if(!!ret)
 		{
 			file = std::move(ret);
@@ -69,22 +63,19 @@ template <typename Begin, typename End> struct FactoryForEachImpl
 
 template <typename End> struct FactoryForEachImpl<End, End>
 {
-	static void factory(OptVariant_t &, const std::string &)
+	static void factory(tagit::audio::detail::OptVariant_t &,
+	                    const std::string &)
 	{
 	}
 };
 
 template <typename Sequence>
-void FactoryForEach(OptVariant_t &file, const std::string &path)
+void FactoryForEach(tagit::audio::detail::OptVariant_t &file,
+                    const std::string &path)
 {
 	FactoryForEachImpl<
 	        typename boost::mpl::begin<Sequence>::type,
 	        typename boost::mpl::end<Sequence>::type>::factory(file, path);
-}
-
-void audioFileFactory(OptVariant_t &file, const std::string &path)
-{
-	FactoryForEach<Sequence_t>(file, path);
 }
 }
 
@@ -92,19 +83,21 @@ namespace tagit
 {
 namespace audio
 {
-class AudioFile::Impl
+namespace detail
 {
-public:
-	Impl(const std::string &path) : file(boost::none)
-	{
-		audioFileFactory(file, path);
-	}
+void audioFileFactory(OptVariant_t &file, const std::string &path)
+{
+	FactoryForEach<Sequence_t>(file, path);
+}
 
-private:
-	OptVariant_t file;
-};
+AudioFileImpl::AudioFileImpl(const std::string &path) : file(boost::none)
+{
+	audioFileFactory(file, path);
+}
+}
 
-AudioFile::AudioFile(const std::string &path) : impl(new Impl(path))
+AudioFile::AudioFile(const std::string &path)
+        : impl(new detail::AudioFileImpl(path))
 {
 }
 
@@ -122,7 +115,7 @@ AudioFile &AudioFile::operator=(const AudioFile &other)
 	if(this == &other)
 		return *this;
 
-	impl.reset(new Impl(*other.impl));
+	impl.reset(new detail::AudioFileImpl(*other.impl));
 	return *this;
 }
 }
