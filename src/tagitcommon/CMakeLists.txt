@@ -22,6 +22,7 @@ set(tagitcommon_SOURCES
 	util/Errno.h
 	util/ScopeExit.cpp
 	util/ScopeExit.h
+	util/VariantUtils.h
 
 )
 

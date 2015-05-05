@@ -89,34 +89,15 @@ void audioFileFactory(OptVariant_t &file, const std::string &path)
 {
 	FactoryForEach<Sequence_t>(file, path);
 }
-
-AudioFileImpl::AudioFileImpl(const std::string &path) : file(boost::none)
-{
-	audioFileFactory(file, path);
-}
 }
 
-AudioFile::AudioFile(const std::string &path)
-        : impl(new detail::AudioFileImpl(path))
+AudioFile::AudioFile(const std::string &path) : file(boost::none)
 {
-}
-
-AudioFile::AudioFile(const AudioFile &other)
-{
-	*this = other;
+	detail::audioFileFactory(file, path);
 }
 
 AudioFile::~AudioFile()
 {
-}
-
-AudioFile &AudioFile::operator=(const AudioFile &other)
-{
-	if(this == &other)
-		return *this;
-
-	impl.reset(new detail::AudioFileImpl(*other.impl));
-	return *this;
 }
 }
 }

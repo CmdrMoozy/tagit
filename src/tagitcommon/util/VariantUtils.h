@@ -16,51 +16,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TAGITCOMMON_AUDIO_AUDIO_FILE_H
-#define TAGITCOMMON_AUDIO_AUDIO_FILE_H
-
-#include <memory>
-#include <string>
+#ifndef TAGITCOMMON_UTIL_VARIANT_UTILS_H
+#define TAGITCOMMON_UTIL_VARIANT_UTILS_H
 
 #include <boost/variant.hpp>
-#include <boost/mpl/vector.hpp>
-#include <boost/optional/optional.hpp>
-
-#include "tagitcommon/audio/WaveFile.h"
-#include "tagitcommon/util/VariantUtils.h"
 
 namespace tagit
 {
-namespace audio
+namespace variant_util
 {
 namespace detail
 {
-typedef boost::mpl::vector<tagit::audio::WaveFile> Sequence_t;
-typedef boost::make_variant_over<Sequence_t>::type Variant_t;
-typedef boost::optional<Variant_t> OptVariant_t;
-
-void audioFileFactory(OptVariant_t &file, const std::string &path);
-}
-
-class AudioFile
+template <typename CheckT>
+struct VariantIsVisitor : public boost::static_visitor<bool>
 {
-public:
-	AudioFile(const std::string &path);
-
-	AudioFile(const AudioFile &) = delete;
-
-	~AudioFile();
-
-	AudioFile &operator=(const AudioFile &) = delete;
-
-	template <typename T> bool is()
+	template <typename T> bool operator()(const T &)
 	{
-		return variant_util::variantIs<T>(file);
+		return false;
 	}
 
-private:
-	detail::OptVariant_t file;
+	bool operator()(const CheckT &)
+	{
+		return true;
+	}
 };
+}
+
+template <typename T, typename... VariantType>
+bool variantIs(const boost::variant<VariantType...> &variant)
+{
+	detail::VariantIsVisitor<T> visitor;
+	return boost::apply_visitor(visitor, variant);
+}
 }
 }
 
