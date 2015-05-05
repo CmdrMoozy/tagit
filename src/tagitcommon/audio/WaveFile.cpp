@@ -22,6 +22,11 @@ namespace tagit
 {
 namespace audio
 {
+boost::optional<WaveFile> WaveFile::factory(const std::string &)
+{
+	return boost::none;
+}
+
 WaveFile::WaveFile()
 {
 }

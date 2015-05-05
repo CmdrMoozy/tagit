@@ -19,6 +19,8 @@
 #ifndef TAGITCOMMON_AUDIO_WAVE_FILE_H
 #define TAGITCOMMON_AUDIO_WAVE_FILE_H
 
+#include <boost/optional/optional.hpp>
+
 namespace tagit
 {
 namespace audio
@@ -26,6 +28,8 @@ namespace audio
 class WaveFile
 {
 public:
+	static boost::optional<WaveFile> factory(const std::string &path);
+
 	WaveFile();
 };
 }
