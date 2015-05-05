@@ -26,6 +26,7 @@
 #include <boost/mpl/vector.hpp>
 #include <boost/optional/optional.hpp>
 
+#include "tagitcommon/audio/MP3File.h"
 #include "tagitcommon/audio/WaveFile.h"
 #include "tagitcommon/util/VariantUtils.h"
 
@@ -35,7 +36,8 @@ namespace audio
 {
 namespace detail
 {
-typedef boost::mpl::vector<tagit::audio::WaveFile> Sequence_t;
+typedef boost::mpl::vector<tagit::audio::MP3File, tagit::audio::WaveFile>
+        Sequence_t;
 typedef boost::make_variant_over<Sequence_t>::type Variant_t;
 typedef boost::optional<Variant_t> OptVariant_t;
 
