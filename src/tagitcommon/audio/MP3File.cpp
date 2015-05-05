@@ -22,7 +22,7 @@ namespace tagit
 {
 namespace audio
 {
-boost::optional<MP3File> MP3File::factory(const std::string &)
+boost::optional<MP3File> MP3File::factory(const io::MemoryMappedFile &)
 {
 	return boost::none;
 }

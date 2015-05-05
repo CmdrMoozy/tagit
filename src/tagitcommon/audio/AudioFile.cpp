@@ -23,6 +23,8 @@
 #include <boost/mpl/begin_end.hpp>
 #include <boost/mpl/next_prior.hpp>
 
+#include "tagitcommon/io/MemoryMappedFile.h"
+
 namespace
 {
 #ifdef BOOST_VARIANT_NO_TYPE_SEQUENCE_SUPPORT
@@ -33,10 +35,10 @@ struct CallFactoryFunction
 {
 	template <typename T>
 	static tagit::audio::detail::OptVariant_t &&
-	call(const std::string &path)
+	call(const tagit::io::MemoryMappedFile &memoryFile)
 	{
 		tagit::audio::detail::OptVariant_t variant = boost::none;
-		boost::optional<T> opt = T::factory(path);
+		boost::optional<T> opt = T::factory(memoryFile);
 		if(!!opt)
 			variant = std::move(*opt);
 		return std::move(variant);
@@ -46,36 +48,37 @@ struct CallFactoryFunction
 template <typename Begin, typename End> struct FactoryForEachImpl
 {
 	static void factory(tagit::audio::detail::OptVariant_t &file,
-	                    const std::string &path)
+	                    const tagit::io::MemoryMappedFile &memoryFile)
 	{
 		tagit::audio::detail::OptVariant_t ret =
 		        CallFactoryFunction::template call<
-		                typename Begin::type>(path);
+		                typename Begin::type>(memoryFile);
 		if(!!ret)
 		{
 			file = std::move(ret);
 			return;
 		}
 		FactoryForEachImpl<typename boost::mpl::next<Begin>::type,
-		                   End>::factory(file, path);
+		                   End>::factory(file, memoryFile);
 	}
 };
 
 template <typename End> struct FactoryForEachImpl<End, End>
 {
 	static void factory(tagit::audio::detail::OptVariant_t &,
-	                    const std::string &)
+	                    const tagit::io::MemoryMappedFile &)
 	{
 	}
 };
 
 template <typename Sequence>
 void FactoryForEach(tagit::audio::detail::OptVariant_t &file,
-                    const std::string &path)
+                    const tagit::io::MemoryMappedFile &memoryFile)
 {
 	FactoryForEachImpl<
 	        typename boost::mpl::begin<Sequence>::type,
-	        typename boost::mpl::end<Sequence>::type>::factory(file, path);
+	        typename boost::mpl::end<Sequence>::type>::factory(file,
+	                                                           memoryFile);
 }
 }
 
@@ -85,15 +88,17 @@ namespace audio
 {
 namespace detail
 {
-void audioFileFactory(OptVariant_t &file, const std::string &path)
+void audioFileFactory(OptVariant_t &file,
+                      const io::MemoryMappedFile &memoryFile)
 {
-	FactoryForEach<Sequence_t>(file, path);
+	FactoryForEach<Sequence_t>(file, memoryFile);
 }
 }
 
 AudioFile::AudioFile(const std::string &path) : file(boost::none)
 {
-	detail::audioFileFactory(file, path);
+	io::MemoryMappedFile memoryFile(path);
+	detail::audioFileFactory(file, memoryFile);
 }
 
 AudioFile::~AudioFile()

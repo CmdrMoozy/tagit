@@ -21,6 +21,8 @@
 
 #include <boost/optional/optional.hpp>
 
+#include "tagitcommon/io/MemoryMappedFile.h"
+
 namespace tagit
 {
 namespace audio
@@ -28,7 +30,8 @@ namespace audio
 class WaveFile
 {
 public:
-	static boost::optional<WaveFile> factory(const std::string &path);
+	static boost::optional<WaveFile>
+	factory(const io::MemoryMappedFile &memoryFile);
 
 	WaveFile();
 };
