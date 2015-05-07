@@ -10,6 +10,9 @@ set(test_SOURCES
 
 	TagItTest.cpp
 
+	audio/AudioFileTest.cpp
+	audio/AudioFileTest.h
+
 	fs/EnvironmentTest.cpp
 	fs/EnvironmentTest.h
 	fs/FSTest.cpp

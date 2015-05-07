@@ -57,7 +57,9 @@ public:
 
 	template <typename T> bool is()
 	{
-		return variant_util::variantIs<T>(file);
+		if(!file)
+			return false;
+		return variant_util::variantIs<T>(*file);
 	}
 
 private:
