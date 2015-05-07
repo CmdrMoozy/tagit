@@ -27,12 +27,24 @@ namespace tagit
 {
 namespace audio
 {
+/*!
+ * \brief This class provides MP3-related functionality.
+ */
 class MP3File
 {
 public:
+	/*!
+	 * Try to construct a new MP3File object from the given raw data
+	 * file. If the given file is not a valid MP3 file, then boost::none
+	 * is returned instead.
+	 *
+	 * \param memoryFile The file to construct an MP3File from.
+	 * \return The resulting MP3File.
+	 */
 	static boost::optional<MP3File>
 	factory(const io::MemoryMappedFile &memoryFile);
 
+private:
 	MP3File();
 };
 }
