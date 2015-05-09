@@ -46,11 +46,11 @@ uint32_t fromSynchsafe(const uint8_t *data, std::size_t off = 0);
  * given offset as a "32-bit synchsafe integer". For more information on what
  * exactly this format means, see fromSynchsafe().
  *
- * \param data THe buffer to write the integer to.
+ * \param data The buffer to write the integer to.
  * \param off The offset in the buffer to write the integer at.
  * \param v The value to write.
  */
-void toSynchsafe(uint32_t *data, std::size_t off, uint32_t v);
+void toSynchsafe(uint8_t *data, std::size_t off, uint32_t v);
 }
 }
 

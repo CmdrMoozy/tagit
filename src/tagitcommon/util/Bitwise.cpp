@@ -32,7 +32,7 @@ uint32_t fromSynchsafe(const uint8_t *data, std::size_t off)
 	return result;
 }
 
-void toSynchsafe(uint32_t *data, std::size_t off, uint32_t v)
+void toSynchsafe(uint8_t *data, std::size_t off, uint32_t v)
 {
 	data[off + 3] = static_cast<uint8_t>(v & 0x7F);
 	data[off + 2] = static_cast<uint8_t>((v >> 7) & 0x7F);
