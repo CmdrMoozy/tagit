@@ -81,7 +81,7 @@ bool isMP3File(const tagit::io::MemoryMappedFile &file)
 	sync |= data[off + 1] & 0xF0;
 	uint8_t version = (data[off + 1] >> 3) & 0x1;
 	uint8_t layer = (data[off + 1] >> 1) & 0x3;
-	return (sync == 0x0FFF) && (version == 1) && (layer == 1);
+	return (sync == 0xFFF0) && (version == 1) && (layer == 1);
 }
 }
 

@@ -34,14 +34,14 @@ static_assert(false, "boost::variant must support type sequences.");
 struct CallFactoryFunction
 {
 	template <typename T>
-	static tagit::audio::detail::OptVariant_t &&
+	static tagit::audio::detail::OptVariant_t
 	call(const tagit::io::MemoryMappedFile &memoryFile)
 	{
 		tagit::audio::detail::OptVariant_t variant = boost::none;
 		boost::optional<T> opt = T::factory(memoryFile);
 		if(!!opt)
 			variant = std::move(*opt);
-		return std::move(variant);
+		return variant;
 	}
 };
 
