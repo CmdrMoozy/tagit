@@ -49,5 +49,15 @@ void toSynchsafe(uint8_t *data, std::size_t off, uint32_t v)
 	data[off + 1] = static_cast<uint8_t>((v >> 14) & 0x7F);
 	data[off + 0] = static_cast<uint8_t>((v >> 21) & 0x7F);
 }
+
+uint32_t switchEndianness(uint32_t v)
+{
+	uint32_t result = 0;
+	result |= (v & 0xFF) << 24;
+	result |= (v & 0xFF00) << 8;
+	result |= (v & 0xFF0000) >> 8;
+	result |= (v & 0xFF000000) >> 24;
+	return result;
+}
 }
 }

@@ -63,6 +63,17 @@ uint32_t fromSynchsafe(const uint8_t *data, std::size_t off = 0);
  * \param v The value to write.
  */
 void toSynchsafe(uint8_t *data, std::size_t off, uint32_t v);
+
+/*!
+ * This function switches the endianness of the given value. For example:
+ *
+ *     0x0A0B0C0D -> 0x0D0C0B0A
+ *     0x0D0C0B0A -> 0x0A0B0C0D
+ *
+ * \param v The value to convert.
+ * \return The converted value.
+ */
+uint32_t switchEndianness(uint32_t v);
 }
 }
 

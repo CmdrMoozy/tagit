@@ -23,6 +23,8 @@ set(test_SOURCES
 	io/MemoryMappedFileTest.cpp
 	io/MemoryMappedFileTest.h
 
+	util/BitwiseTest.cpp
+	util/BitwiseTest.h
 	util/ErrnoTest.cpp
 	util/ErrnoTest.h
 	util/ScopeExitTest.cpp
