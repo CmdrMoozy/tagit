@@ -15,6 +15,8 @@ set(tagitcommon_SOURCES
 	audio/MP3File.h
 	audio/Utils.cpp
 	audio/Utils.h
+	audio/VorbisFile.cpp
+	audio/VorbisFile.h
 	audio/WaveFile.cpp
 	audio/WaveFile.h
 
