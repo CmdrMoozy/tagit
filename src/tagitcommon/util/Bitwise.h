@@ -27,6 +27,18 @@ namespace tagit
 namespace bitwise
 {
 /*!
+ * Load a 32-bit unsigned integer from the given byte buffer at the given
+ * offset. This assumes that the buffer's byte order matches uint32_t's. For
+ * instance, if data contains (in hex): 00 00 00 18, then the returned value
+ * will be equal to 24.
+ *
+ * \param data The buffer containing the integer.
+ * \param off The offset in the buffer at which the integer starts.
+ * \return The value as a normal 32-bit integer.
+ */
+uint32_t integerFromBytes(const uint8_t *data, std::size_t off = 0);
+
+/*!
  * This function converts a "32-bit synchsafe integer" found e.g. in MP3
  * headers, and converts it to a standard 32-bit integer type.
  *

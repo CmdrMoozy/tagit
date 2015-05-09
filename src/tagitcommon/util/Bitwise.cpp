@@ -22,6 +22,16 @@ namespace tagit
 {
 namespace bitwise
 {
+uint32_t integerFromBytes(const uint8_t *data, std::size_t off)
+{
+	uint32_t result = 0;
+	result |= static_cast<uint32_t>(data[off + 0]) << 24;
+	result |= static_cast<uint32_t>(data[off + 1]) << 16;
+	result |= static_cast<uint32_t>(data[off + 2]) << 8;
+	result |= static_cast<uint32_t>(data[off + 3]);
+	return result;
+}
+
 uint32_t fromSynchsafe(const uint8_t *data, std::size_t off)
 {
 	uint32_t result = 0;

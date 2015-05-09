@@ -25,6 +25,8 @@
 #include <locale>
 #include <string>
 
+#include "tagitcommon/util/Bitwise.h"
+
 namespace tagit
 {
 namespace audio
@@ -38,7 +40,7 @@ bool isMP4AudioFile(const tagit::io::MemoryMappedFile &file)
 		return false;
 
 	// The file must be long enough for this atom.
-	uint32_t length = *reinterpret_cast<const uint32_t *>(file.getData());
+	uint32_t length = tagit::bitwise::integerFromBytes(file.getData());
 	if(file.getLength() < length)
 		return false;
 
