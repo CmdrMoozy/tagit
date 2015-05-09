@@ -20,6 +20,8 @@ set(tagitcommon_SOURCES
 	io/MemoryMappedFile.cpp
 	io/MemoryMappedFile.h
 
+	tag/TaggedFile.h
+
 	util/Bitwise.cpp
 	util/Bitwise.h
 	util/Errno.cpp
