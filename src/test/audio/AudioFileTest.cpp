@@ -63,6 +63,7 @@ void AudioFileTest::test()
 	testAudioFile<tagit::audio::MP3File>("mp3-320.mp3");
 	testAudioFile<tagit::audio::MP3File>("mp3-v0.mp3");
 	testAudioFile<tagit::audio::MP3File>("mp3-v2.mp3");
+	testAudioFile<tagit::audio::MP3File>("mp3-320-id3.mp3");
 }
 }
 }
