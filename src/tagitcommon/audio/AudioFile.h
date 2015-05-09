@@ -30,6 +30,7 @@
 #include "tagitcommon/audio/ALACFile.h"
 #include "tagitcommon/audio/FLACFile.h"
 #include "tagitcommon/audio/MP3File.h"
+#include "tagitcommon/audio/VorbisFile.h"
 #include "tagitcommon/audio/WaveFile.h"
 #include "tagitcommon/util/VariantUtils.h"
 
@@ -41,6 +42,7 @@ namespace detail
 {
 typedef boost::mpl::vector<tagit::audio::AACFile, tagit::audio::ALACFile,
                            tagit::audio::FLACFile, tagit::audio::MP3File,
+                           tagit::audio::VorbisFile,
                            tagit::audio::WaveFile> Sequence_t;
 typedef boost::make_variant_over<Sequence_t>::type Variant_t;
 typedef boost::optional<Variant_t> OptVariant_t;
