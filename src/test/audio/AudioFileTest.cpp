@@ -24,6 +24,8 @@
 #include <QFile>
 #include <QString>
 
+#include "tagitcommon/audio/AACFile.h"
+#include "tagitcommon/audio/ALACFile.h"
 #include "tagitcommon/audio/AudioFile.h"
 #include "tagitcommon/audio/MP3File.h"
 #include "tagitcommon/fs/TemporaryStorage.h"
@@ -60,6 +62,8 @@ namespace audio
 {
 void AudioFileTest::test()
 {
+	testAudioFile<tagit::audio::AACFile>("aac.m4a");
+	testAudioFile<tagit::audio::ALACFile>("alac.m4a");
 	testAudioFile<tagit::audio::MP3File>("mp3-320.mp3");
 	testAudioFile<tagit::audio::MP3File>("mp3-v0.mp3");
 	testAudioFile<tagit::audio::MP3File>("mp3-v2.mp3");
