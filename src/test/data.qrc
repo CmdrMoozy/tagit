@@ -2,7 +2,9 @@
 <RCC version="1.0">
 	<qresource>
 		<file>data/aac.m4a</file>
+		<file>data/aac-tagged.m4a</file>
 		<file>data/alac.m4a</file>
+		<file>data/alac-tagged.m4a</file>
 		<file>data/flac.flac</file>
 		<file>data/mp3-320.mp3</file>
 		<file>data/mp3-320-id3.mp3</file>
