@@ -6,6 +6,7 @@
 		<file>data/alac.m4a</file>
 		<file>data/alac-tagged.m4a</file>
 		<file>data/flac.flac</file>
+		<file>data/flac-tagged.flac</file>
 		<file>data/mp3-320.mp3</file>
 		<file>data/mp3-320-id3.mp3</file>
 		<file>data/mp3-v0.mp3</file>
