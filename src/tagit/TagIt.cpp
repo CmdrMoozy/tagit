@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 {
 	QApplication app(argc, argv);
 
-	tagit::MainWindow w;
+	tagit::ui::MainWindow w;
 	w.show();
 
 	return app.exec();

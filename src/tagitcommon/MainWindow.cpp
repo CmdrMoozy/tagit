@@ -18,10 +18,40 @@
 
 #include "MainWindow.h"
 
+#include <QGridLayout>
+#include <QWidget>
+
+#include "tagitcommon/ui/PathInputWidget.h"
+
+namespace
+{
+const std::string LIBRARY_NAME = "library";
+const std::string INPUT_NAME = "input";
+}
+
 namespace tagit
 {
-MainWindow::MainWindow() : QMainWindow(nullptr, 0)
+namespace ui
+{
+MainWindow::MainWindow() : QMainWindow(nullptr, 0), pathInputs(nullptr)
 {
 	setWindowTitle(tr("TagIt"));
+
+	centralWidget = new QWidget(this);
+	layout = new QGridLayout(centralWidget);
+
+	pathInputs = new PathInputWidget(
+	        {PathInput(LIBRARY_NAME, PathInputType::DIRECTORY,
+	                   tr("Music library:")),
+	         PathInput(INPUT_NAME, PathInputType::DIRECTORY,
+	                   tr("Music to tag:"))},
+	        centralWidget);
+
+	layout->addWidget(pathInputs, 0, 0, 1, 1);
+	layout->setRowStretch(1, 1);
+	layout->setColumnStretch(1, 1);
+	centralWidget->setLayout(layout);
+	setCentralWidget(centralWidget);
+}
 }
 }

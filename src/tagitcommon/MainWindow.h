@@ -21,8 +21,15 @@
 
 #include <QMainWindow>
 
+class QGridLayout;
+class QWidget;
+
 namespace tagit
 {
+namespace ui
+{
+class PathInputWidget;
+
 class MainWindow : public QMainWindow
 {
 public:
@@ -32,7 +39,13 @@ public:
 	virtual ~MainWindow() = default;
 
 	MainWindow &operator=(const MainWindow &) = delete;
+
+private:
+	QWidget *centralWidget;
+	QGridLayout *layout;
+	PathInputWidget *pathInputs;
 };
+}
 }
 
 #endif
