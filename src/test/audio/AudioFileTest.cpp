@@ -27,6 +27,7 @@
 #include "tagitcommon/audio/AACFile.h"
 #include "tagitcommon/audio/ALACFile.h"
 #include "tagitcommon/audio/AudioFile.h"
+#include "tagitcommon/audio/FLACFile.h"
 #include "tagitcommon/audio/MP3File.h"
 #include "tagitcommon/fs/TemporaryStorage.h"
 
@@ -66,6 +67,8 @@ void AudioFileTest::test()
 	testAudioFile<tagit::audio::AACFile>("aac-tagged.m4a");
 	testAudioFile<tagit::audio::ALACFile>("alac.m4a");
 	testAudioFile<tagit::audio::ALACFile>("alac-tagged.m4a");
+	testAudioFile<tagit::audio::FLACFile>("flac.flac");
+	testAudioFile<tagit::audio::FLACFile>("flac-tagged.flac");
 	testAudioFile<tagit::audio::MP3File>("mp3-320.mp3");
 	testAudioFile<tagit::audio::MP3File>("mp3-v0.mp3");
 	testAudioFile<tagit::audio::MP3File>("mp3-v2.mp3");
