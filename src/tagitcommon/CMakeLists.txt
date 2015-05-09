@@ -34,6 +34,9 @@ set(tagitcommon_SOURCES
 	tag/Tag.h
 	tag/TaggedFile.h
 
+	ui/PathInputWidget.cpp
+	ui/PathInputWidget.h
+
 	util/Bitwise.cpp
 	util/Bitwise.h
 	util/Errno.cpp
