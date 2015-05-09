@@ -16,36 +16,57 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TAGITCOMMON_MAIN_WINDOW_H
-#define TAGITCOMMON_MAIN_WINDOW_H
+#ifndef TAGITCOMMON_UI_AUDIO_TAG_WIDGET_H
+#define TAGITCOMMON_UI_AUDIO_TAG_WIDGET_H
 
-#include <QMainWindow>
+#include <QWidget>
 
+#include "tagitcommon/tag/Tag.h"
+
+class QComboBox;
 class QGridLayout;
-class QWidget;
+class QLabel;
+class QLineEdit;
+class QSpinBox;
 
 namespace tagit
 {
 namespace ui
 {
-class AudioTagWidget;
-class PathInputWidget;
-
-class MainWindow : public QMainWindow
+class AudioTagWidget : public QWidget
 {
+	Q_OBJECT
+
 public:
-	MainWindow();
-	MainWindow(const MainWindow &) = delete;
+	AudioTagWidget(QWidget *p = nullptr, Qt::WindowFlags f = 0);
 
-	virtual ~MainWindow() = default;
+	AudioTagWidget(const AudioTagWidget &) = delete;
+	virtual ~AudioTagWidget() = default;
 
-	MainWindow &operator=(const MainWindow &) = delete;
+	AudioTagWidget &operator=(const AudioTagWidget &) = delete;
+
+	tagit::tag::Tag getTag() const;
 
 private:
-	QWidget *centralWidget;
+	tagit::tag::Tag tag;
+
 	QGridLayout *layout;
-	PathInputWidget *pathInputs;
-	AudioTagWidget *tagWidget;
+	QLabel *titleLabel;
+	QLineEdit *titleInput;
+	QLabel *artistLabel;
+	QLineEdit *artistInput;
+	QLabel *albumLabel;
+	QLineEdit *albumInput;
+	QLabel *cdLabel;
+	QSpinBox *cdInput;
+	QLabel *yearLabel;
+	QLineEdit *yearInput;
+	QLabel *trackLabel;
+	QSpinBox *trackInput;
+	QLabel *trackOfLabel;
+	QSpinBox *tracksInput;
+	QLabel *genreLabel;
+	QComboBox *genreInput;
 };
 }
 }

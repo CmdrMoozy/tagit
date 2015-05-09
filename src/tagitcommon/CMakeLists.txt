@@ -34,6 +34,8 @@ set(tagitcommon_SOURCES
 	tag/Tag.h
 	tag/TaggedFile.h
 
+	ui/AudioTagWidget.cpp
+	ui/AudioTagWidget.h
 	ui/PathInputWidget.cpp
 	ui/PathInputWidget.h
 

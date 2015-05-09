@@ -21,6 +21,7 @@
 #include <QGridLayout>
 #include <QWidget>
 
+#include "tagitcommon/ui/AudioTagWidget.h"
 #include "tagitcommon/ui/PathInputWidget.h"
 
 namespace
@@ -33,7 +34,8 @@ namespace tagit
 {
 namespace ui
 {
-MainWindow::MainWindow() : QMainWindow(nullptr, 0), pathInputs(nullptr)
+MainWindow::MainWindow()
+        : QMainWindow(nullptr, 0), pathInputs(nullptr), tagWidget(nullptr)
 {
 	setWindowTitle(tr("TagIt"));
 
@@ -47,7 +49,10 @@ MainWindow::MainWindow() : QMainWindow(nullptr, 0), pathInputs(nullptr)
 	                   tr("Music to tag:"))},
 	        centralWidget);
 
+	tagWidget = new AudioTagWidget(centralWidget);
+
 	layout->addWidget(pathInputs, 0, 0, 1, 1);
+	layout->addWidget(tagWidget, 0, 1, 2, 1);
 	layout->setRowStretch(1, 1);
 	layout->setColumnStretch(1, 1);
 	centralWidget->setLayout(layout);
