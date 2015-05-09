@@ -7,6 +7,8 @@ set(tagitcommon_SOURCES
 	audio/AudioFile.h
 	audio/MP3File.cpp
 	audio/MP3File.h
+	audio/Utils.cpp
+	audio/Utils.h
 	audio/WaveFile.cpp
 	audio/WaveFile.h
 
