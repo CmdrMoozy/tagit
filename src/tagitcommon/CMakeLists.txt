@@ -3,6 +3,8 @@ set(tagitcommon_SOURCES
 	MainWindow.cpp
 	MainWindow.h
 
+	audio/AACFile.cpp
+	audio/AACFile.h
 	audio/AudioFile.cpp
 	audio/AudioFile.h
 	audio/MP3File.cpp
