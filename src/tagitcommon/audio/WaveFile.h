@@ -27,9 +27,21 @@ namespace tagit
 {
 namespace audio
 {
+/*!
+ * \brief This class provides WAV file functionality.
+ */
 class WaveFile
 {
 public:
+	/*!
+	 * Try to construct a new WaveFile object from the given raw data
+	 * file. If the given file is not a valid WAV file, then boost::none
+	 * is returned instead. Note that only WAV files with a standard RIFF
+	 * header is present (raw PCM data is not valid).
+	 *
+	 * \param memoryFile The file to construct an WaveFile from.
+	 * \return The resulting WaveFile.
+	 */
 	static boost::optional<WaveFile>
 	factory(const io::MemoryMappedFile &memoryFile);
 

@@ -30,6 +30,7 @@
 #include "tagitcommon/audio/FLACFile.h"
 #include "tagitcommon/audio/MP3File.h"
 #include "tagitcommon/audio/VorbisFile.h"
+#include "tagitcommon/audio/WaveFile.h"
 #include "tagitcommon/fs/TemporaryStorage.h"
 
 namespace
@@ -76,6 +77,7 @@ void AudioFileTest::test()
 	testAudioFile<tagit::audio::MP3File>("mp3-320-id3.mp3");
 	testAudioFile<tagit::audio::VorbisFile>("vorbis.ogg");
 	testAudioFile<tagit::audio::VorbisFile>("vorbis-tagged.ogg");
+	testAudioFile<tagit::audio::WaveFile>("wav.wav");
 }
 }
 }

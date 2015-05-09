@@ -18,6 +18,8 @@
 
 #include "WaveFile.h"
 
+#include <cstring>
+
 namespace tagit
 {
 namespace audio
@@ -25,7 +27,19 @@ namespace audio
 boost::optional<WaveFile>
 WaveFile::factory(const io::MemoryMappedFile &memoryFile)
 {
-	return boost::none;
+	// The file should start with a RIFF header and a length. After that,
+	// a "WAVE" chunk should be present.
+
+	if(memoryFile.getLength() < 12)
+		return boost::none;
+
+	if(std::memcmp(memoryFile.getData(), "RIFF", 4) != 0)
+		return boost::none;
+
+	if(std::memcmp(memoryFile.getData() + 8, "WAVE", 4) != 0)
+		return boost::none;
+
+	return WaveFile();
 }
 
 WaveFile::WaveFile()
