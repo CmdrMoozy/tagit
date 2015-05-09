@@ -22,6 +22,8 @@
 #include <QMainWindow>
 
 class QGridLayout;
+class QGroupBox;
+class QListView;
 class QWidget;
 
 namespace tagit
@@ -44,7 +46,15 @@ public:
 private:
 	QWidget *centralWidget;
 	QGridLayout *layout;
+
 	PathInputWidget *pathInputs;
+
+	QGroupBox *tracksGroupBox;
+	QGridLayout *tracksLayout;
+	QListView *tracksView;
+
+	QGroupBox *tagGroupBox;
+	QGridLayout *tagLayout;
 	AudioTagWidget *tagWidget;
 };
 }

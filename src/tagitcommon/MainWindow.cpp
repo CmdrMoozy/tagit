@@ -19,6 +19,8 @@
 #include "MainWindow.h"
 
 #include <QGridLayout>
+#include <QGroupBox>
+#include <QListView>
 #include <QWidget>
 
 #include "tagitcommon/ui/AudioTagWidget.h"
@@ -35,7 +37,14 @@ namespace tagit
 namespace ui
 {
 MainWindow::MainWindow()
-        : QMainWindow(nullptr, 0), pathInputs(nullptr), tagWidget(nullptr)
+        : QMainWindow(nullptr, 0),
+          pathInputs(nullptr),
+          tracksGroupBox(nullptr),
+          tracksLayout(nullptr),
+          tracksView(nullptr),
+          tagGroupBox(nullptr),
+          tagLayout(nullptr),
+          tagWidget(nullptr)
 {
 	setWindowTitle(tr("TagIt"));
 
@@ -49,10 +58,25 @@ MainWindow::MainWindow()
 	                   tr("Music to tag:"))},
 	        centralWidget);
 
-	tagWidget = new AudioTagWidget(centralWidget);
+	tracksGroupBox = new QGroupBox(tr("Audio Files"), centralWidget);
+	tracksLayout = new QGridLayout(tracksGroupBox);
+	tracksView = new QListView(tracksGroupBox);
+	tracksLayout->addWidget(tracksView, 0, 0, 1, 1);
+	tracksLayout->setRowStretch(0, 1);
+	tracksLayout->setColumnStretch(0, 1);
+	tracksGroupBox->setLayout(tracksLayout);
+
+	tagGroupBox = new QGroupBox(tr("Audio File Tag"), centralWidget);
+	tagLayout = new QGridLayout(tagGroupBox);
+	tagWidget = new AudioTagWidget(tagGroupBox);
+	tagLayout->addWidget(tagWidget, 0, 0, 1, 1);
+	tagLayout->setRowStretch(0, 1);
+	tagLayout->setColumnStretch(0, 1);
+	tagGroupBox->setLayout(tagLayout);
 
 	layout->addWidget(pathInputs, 0, 0, 1, 1);
-	layout->addWidget(tagWidget, 0, 1, 2, 1);
+	layout->addWidget(tracksGroupBox, 1, 0, 1, 1);
+	layout->addWidget(tagGroupBox, 0, 1, 2, 1);
 	layout->setRowStretch(1, 1);
 	layout->setColumnStretch(1, 1);
 	centralWidget->setLayout(layout);
