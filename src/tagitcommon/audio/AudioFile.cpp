@@ -20,8 +20,12 @@
 
 #include <utility>
 
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
 #include <boost/mpl/begin_end.hpp>
 #include <boost/mpl/next_prior.hpp>
+
+#include <QFileInfo>
 
 #include "tagitcommon/io/MemoryMappedFile.h"
 
@@ -95,14 +99,39 @@ void audioFileFactory(OptVariant_t &file,
 }
 }
 
-AudioFile::AudioFile(const std::string &path) : file(boost::none)
+AudioFile::AudioFile() : path(), file(boost::none)
 {
-	io::MemoryMappedFile memoryFile(path);
-	detail::audioFileFactory(file, memoryFile);
 }
 
-AudioFile::~AudioFile()
+AudioFile::AudioFile(const std::string &p) : path(), file(boost::none)
 {
+	boost::filesystem::path pathObj(p);
+	if(!boost::filesystem::exists(pathObj))
+		return;
+	pathObj = boost::filesystem::absolute(
+	        boost::filesystem::canonical(pathObj));
+	path = pathObj.string();
+
+	io::MemoryMappedFile memoryFile(path);
+	detail::audioFileFactory(file, memoryFile);
+	if(!file)
+		path.clear();
+}
+
+bool AudioFile::operator!() const
+{
+	return !file;
+}
+
+std::string AudioFile::getPath() const
+{
+	return path;
+}
+
+std::string AudioFile::getFilename() const
+{
+	boost::filesystem::path pathObj(path);
+	return pathObj.filename().string();
 }
 }
 }

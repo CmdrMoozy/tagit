@@ -53,13 +53,18 @@ void audioFileFactory(OptVariant_t &file, const std::string &path);
 class AudioFile
 {
 public:
-	AudioFile(const std::string &path);
+	AudioFile();
+	AudioFile(const std::string &p);
 
 	AudioFile(const AudioFile &) = delete;
+	AudioFile(AudioFile &&) = default;
 
-	~AudioFile();
+	~AudioFile() = default;
 
 	AudioFile &operator=(const AudioFile &) = delete;
+	AudioFile &operator=(AudioFile &&) = default;
+
+	bool operator!() const;
 
 	template <typename T> bool is()
 	{
@@ -68,7 +73,11 @@ public:
 		return variant_util::variantIs<T>(*file);
 	}
 
+	std::string getPath() const;
+	std::string getFilename() const;
+
 private:
+	std::string path;
 	detail::OptVariant_t file;
 };
 }
