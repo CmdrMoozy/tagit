@@ -18,9 +18,12 @@
 
 #include "MainWindow.h"
 
+#include <stdexcept>
+
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QListView>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QWidget>
 
@@ -98,8 +101,20 @@ MainWindow::MainWindow()
 	centralWidget->setLayout(layout);
 	setCentralWidget(centralWidget);
 
+	applyButton->setEnabled(false);
+	tracksGroupBox->setEnabled(false);
+	tagGroupBox->setEnabled(false);
+
+	QObject::connect(pathInputs, SIGNAL(pathChanged(const std::string &,
+	                                                const QString &)),
+	                 this, SLOT(doInputPathChanged()));
 	QObject::connect(applyButton, SIGNAL(clicked(bool)), this,
 	                 SLOT(doApplyPaths()));
+}
+
+void MainWindow::doInputPathChanged()
+{
+	applyButton->setEnabled(true);
 }
 
 void MainWindow::doApplyPaths()
@@ -107,7 +122,17 @@ void MainWindow::doApplyPaths()
 	std::string path = pathInputs->getPath(INPUT_NAME).toStdString();
 	if(path.length() == 0)
 		return;
-	tracksModel->setPath(path);
+
+	try
+	{
+		tracksModel->setPath(path);
+
+		applyButton->setEnabled(false);
+	}
+	catch(const std::runtime_error &e)
+	{
+		QMessageBox::critical(this, tr("Error"), tr(e.what()));
+	}
 }
 }
 }

@@ -70,6 +70,8 @@ private:
 	AudioTagWidget *tagWidget;
 
 private Q_SLOTS:
+	void doInputPathChanged();
+
 	void doApplyPaths();
 };
 }
