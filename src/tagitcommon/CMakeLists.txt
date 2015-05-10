@@ -9,6 +9,8 @@ set(tagitcommon_SOURCES
 	audio/ALACFile.h
 	audio/AudioFile.cpp
 	audio/AudioFile.h
+	audio/AudioFileModel.cpp
+	audio/AudioFileModel.h
 	audio/FLACFile.cpp
 	audio/FLACFile.h
 	audio/MP3File.cpp
