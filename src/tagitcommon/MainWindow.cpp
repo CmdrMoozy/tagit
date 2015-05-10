@@ -24,6 +24,7 @@
 #include <QPushButton>
 #include <QWidget>
 
+#include "tagitcommon/audio/AudioFileModel.h"
 #include "tagitcommon/ui/AudioTagWidget.h"
 #include "tagitcommon/ui/PathInputWidget.h"
 
@@ -46,6 +47,7 @@ MainWindow::MainWindow()
           tracksGroupBox(nullptr),
           tracksLayout(nullptr),
           tracksView(nullptr),
+          tracksModel(nullptr),
           tagGroupBox(nullptr),
           tagLayout(nullptr),
           tagWidget(nullptr)
@@ -73,6 +75,8 @@ MainWindow::MainWindow()
 	tracksGroupBox = new QGroupBox(tr("Audio Files"), centralWidget);
 	tracksLayout = new QGridLayout(tracksGroupBox);
 	tracksView = new QListView(tracksGroupBox);
+	tracksModel = new tagit::audio::AudioFileModel(tracksView);
+	tracksView->setModel(tracksModel);
 	tracksLayout->addWidget(tracksView, 0, 0, 1, 1);
 	tracksLayout->setRowStretch(0, 1);
 	tracksLayout->setColumnStretch(0, 1);
@@ -93,6 +97,17 @@ MainWindow::MainWindow()
 	layout->setColumnStretch(1, 1);
 	centralWidget->setLayout(layout);
 	setCentralWidget(centralWidget);
+
+	QObject::connect(applyButton, SIGNAL(clicked(bool)), this,
+	                 SLOT(doApplyPaths()));
+}
+
+void MainWindow::doApplyPaths()
+{
+	std::string path = pathInputs->getPath(INPUT_NAME).toStdString();
+	if(path.length() == 0)
+		return;
+	tracksModel->setPath(path);
 }
 }
 }

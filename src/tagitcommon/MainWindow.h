@@ -29,6 +29,11 @@ class QWidget;
 
 namespace tagit
 {
+namespace audio
+{
+class AudioFileModel;
+}
+
 namespace ui
 {
 class AudioTagWidget;
@@ -58,10 +63,14 @@ private:
 	QGroupBox *tracksGroupBox;
 	QGridLayout *tracksLayout;
 	QListView *tracksView;
+	tagit::audio::AudioFileModel *tracksModel;
 
 	QGroupBox *tagGroupBox;
 	QGridLayout *tagLayout;
 	AudioTagWidget *tagWidget;
+
+private Q_SLOTS:
+	void doApplyPaths();
 };
 }
 }

@@ -29,7 +29,7 @@ namespace tagit
 {
 namespace audio
 {
-class AudioFileModel : QAbstractListModel
+class AudioFileModel : public QAbstractListModel
 {
 public:
 	AudioFileModel(QObject *p = nullptr);
