@@ -24,6 +24,7 @@
 class QGridLayout;
 class QGroupBox;
 class QListView;
+class QPushButton;
 class QWidget;
 
 namespace tagit
@@ -35,6 +36,8 @@ class PathInputWidget;
 
 class MainWindow : public QMainWindow
 {
+	Q_OBJECT
+
 public:
 	MainWindow();
 	MainWindow(const MainWindow &) = delete;
@@ -47,7 +50,10 @@ private:
 	QWidget *centralWidget;
 	QGridLayout *layout;
 
+	QGroupBox *pathsGroupBox;
+	QGridLayout *pathsLayout;
 	PathInputWidget *pathInputs;
+	QPushButton *applyButton;
 
 	QGroupBox *tracksGroupBox;
 	QGridLayout *tracksLayout;

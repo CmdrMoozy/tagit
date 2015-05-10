@@ -21,6 +21,7 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QListView>
+#include <QPushButton>
 #include <QWidget>
 
 #include "tagitcommon/ui/AudioTagWidget.h"
@@ -38,7 +39,10 @@ namespace ui
 {
 MainWindow::MainWindow()
         : QMainWindow(nullptr, 0),
+          pathsGroupBox(nullptr),
+          pathsLayout(nullptr),
           pathInputs(nullptr),
+          applyButton(nullptr),
           tracksGroupBox(nullptr),
           tracksLayout(nullptr),
           tracksView(nullptr),
@@ -51,12 +55,20 @@ MainWindow::MainWindow()
 	centralWidget = new QWidget(this);
 	layout = new QGridLayout(centralWidget);
 
+	pathsGroupBox = new QGroupBox(tr("Input Paths"), centralWidget);
+	pathsLayout = new QGridLayout(pathsGroupBox);
 	pathInputs = new PathInputWidget(
 	        {PathInput(LIBRARY_NAME, PathInputType::DIRECTORY,
 	                   tr("Music library:")),
 	         PathInput(INPUT_NAME, PathInputType::DIRECTORY,
 	                   tr("Music to tag:"))},
-	        centralWidget);
+	        pathsGroupBox);
+	applyButton = new QPushButton(tr("Apply"), pathsGroupBox);
+	pathsLayout->addWidget(pathInputs, 0, 0, 1, 2);
+	pathsLayout->addWidget(applyButton, 1, 1, 1, 1);
+	pathsLayout->setRowStretch(0, 1);
+	pathsLayout->setColumnStretch(0, 1);
+	pathsGroupBox->setLayout(pathsLayout);
 
 	tracksGroupBox = new QGroupBox(tr("Audio Files"), centralWidget);
 	tracksLayout = new QGridLayout(tracksGroupBox);
@@ -74,7 +86,7 @@ MainWindow::MainWindow()
 	tagLayout->setColumnStretch(0, 1);
 	tagGroupBox->setLayout(tagLayout);
 
-	layout->addWidget(pathInputs, 0, 0, 1, 1);
+	layout->addWidget(pathsGroupBox, 0, 0, 1, 1);
 	layout->addWidget(tracksGroupBox, 1, 0, 1, 1);
 	layout->addWidget(tagGroupBox, 0, 1, 2, 1);
 	layout->setRowStretch(1, 1);
