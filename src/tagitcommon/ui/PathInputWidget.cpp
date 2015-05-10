@@ -40,8 +40,10 @@ PathInputWidget::PathInputWidget(const std::initializer_list<PathInput> &inputs,
                                  QWidget *p, Qt::WindowFlags f)
         : QWidget(p, f),
           layout(nullptr),
+          inputNames(),
           inputTypes(),
           buttonInputs(),
+          buttonNames(),
           pathInputs()
 {
 	layout = new QGridLayout(this);
@@ -58,8 +60,10 @@ PathInputWidget::PathInputWidget(const std::initializer_list<PathInput> &inputs,
 		QPushButton *browseButton =
 		        new QPushButton(tr("Browse..."), this);
 
+		inputNames.insert(std::make_pair(pathInput, input.name));
 		inputTypes.insert(std::make_pair(browseButton, input.type));
 		buttonInputs.insert(std::make_pair(browseButton, pathInput));
+		buttonNames.insert(std::make_pair(browseButton, input.name));
 		pathInputs.insert(std::make_pair(input.name, pathInput));
 
 		layout->addWidget(label, i, 0, 1, 1);
@@ -67,6 +71,9 @@ PathInputWidget::PathInputWidget(const std::initializer_list<PathInput> &inputs,
 		layout->addWidget(browseButton, i, 2, 1, 1);
 		++i;
 
+		QObject::connect(pathInput,
+		                 SIGNAL(textChanged(const QString &)), this,
+		                 SLOT(doPathInputChanged()));
 		QObject::connect(browseButton, SIGNAL(clicked(bool)), this,
 		                 SLOT(doBrowse()));
 	}
@@ -95,6 +102,19 @@ QString PathInputWidget::getPath(const std::string &name) const
 	return it->second->text();
 }
 
+void PathInputWidget::doPathInputChanged()
+{
+	QLineEdit *input = dynamic_cast<QLineEdit *>(sender());
+	if(input == nullptr)
+		return;
+
+	auto nit = inputNames.find(input);
+	if(nit == inputNames.end())
+		return;
+
+	Q_EMIT(pathChanged(nit->second, input->text()));
+}
+
 void PathInputWidget::doBrowse()
 {
 	QPushButton *button = dynamic_cast<QPushButton *>(sender());
@@ -111,6 +131,10 @@ void PathInputWidget::doBrowse()
 		return;
 	QLineEdit *input = iit->second;
 
+	auto nit = buttonNames.find(button);
+	if(nit == buttonNames.end())
+		return;
+
 	switch(type)
 	{
 	case PathInputType::FILE:
@@ -119,6 +143,8 @@ void PathInputWidget::doBrowse()
 		        this, tr("Open File"), QDir::homePath());
 		if(!file.isNull())
 			input->setText(file);
+
+		Q_EMIT(pathChanged(nit->second, file));
 	}
 	break;
 
@@ -128,6 +154,8 @@ void PathInputWidget::doBrowse()
 		        this, tr("Open Directory"), QDir::homePath());
 		if(!directory.isNull())
 			input->setText(directory);
+
+		Q_EMIT(pathChanged(nit->second, directory));
 	}
 	break;
 

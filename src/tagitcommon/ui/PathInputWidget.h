@@ -100,12 +100,19 @@ public:
 
 private:
 	QGridLayout *layout;
+	std::map<const QLineEdit *, std::string> inputNames;
 	std::map<const QPushButton *, PathInputType> inputTypes;
 	std::map<const QPushButton *, QLineEdit *> buttonInputs;
+	std::map<const QPushButton *, std::string> buttonNames;
 	std::map<std::string, QLineEdit *> pathInputs;
 
 private Q_SLOTS:
+	void doPathInputChanged();
+
 	void doBrowse();
+
+Q_SIGNALS:
+	void pathChanged(const std::string &, const QString &);
 };
 }
 }
