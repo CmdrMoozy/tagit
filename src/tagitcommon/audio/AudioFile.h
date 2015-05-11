@@ -26,6 +26,8 @@
 #include <boost/mpl/vector.hpp>
 #include <boost/optional/optional.hpp>
 
+#include <taglib/fileref.h>
+
 #include "tagitcommon/audio/AACFile.h"
 #include "tagitcommon/audio/ALACFile.h"
 #include "tagitcommon/audio/FLACFile.h"
@@ -48,6 +50,20 @@ typedef boost::make_variant_over<Sequence_t>::type Variant_t;
 typedef boost::optional<Variant_t> OptVariant_t;
 
 void audioFileFactory(OptVariant_t &file, const std::string &path);
+
+struct TagLibFileVisitor
+        : public boost::static_visitor<std::shared_ptr<TagLib::File>>
+{
+	const std::string path;
+
+	TagLibFileVisitor(const std::string &p);
+
+	template <typename T>
+	std::shared_ptr<TagLib::File> operator()(const T &t)
+	{
+		return tagit::audio::visitor::tagLibFile(path, t);
+	}
+};
 }
 
 class AudioFile
@@ -79,6 +95,7 @@ public:
 private:
 	std::string path;
 	detail::OptVariant_t file;
+	std::shared_ptr<TagLib::File> tagLibFile;
 };
 }
 }

@@ -48,5 +48,14 @@ ALACFile::factory(const io::MemoryMappedFile &memoryFile)
 ALACFile::ALACFile()
 {
 }
+
+namespace visitor
+{
+std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
+                                         const ALACFile &)
+{
+	return std::make_shared<TagLib::MP4::File>(path.c_str(), true);
+}
+}
 }
 }

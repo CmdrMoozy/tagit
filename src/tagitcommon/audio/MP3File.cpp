@@ -21,6 +21,8 @@
 #include <cstddef>
 #include <cstring>
 
+#include <taglib/mpegfile.h>
+
 #include "tagitcommon/util/Bitwise.h"
 
 namespace
@@ -99,6 +101,15 @@ boost::optional<MP3File> MP3File::factory(const io::MemoryMappedFile &file)
 
 MP3File::MP3File()
 {
+}
+
+namespace visitor
+{
+std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
+                                         const MP3File &)
+{
+	return std::make_shared<TagLib::MPEG::File>(path.c_str(), true);
+}
 }
 }
 }

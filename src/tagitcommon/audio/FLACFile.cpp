@@ -20,6 +20,8 @@
 
 #include <cstring>
 
+#include <taglib/flacfile.h>
+
 namespace tagit
 {
 namespace audio
@@ -40,6 +42,15 @@ FLACFile::factory(const io::MemoryMappedFile &memoryFile)
 
 FLACFile::FLACFile()
 {
+}
+
+namespace visitor
+{
+std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
+                                         const FLACFile &)
+{
+	return std::make_shared<TagLib::FLAC::File>(path.c_str(), true);
+}
 }
 }
 }

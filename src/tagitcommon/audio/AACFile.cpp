@@ -45,5 +45,14 @@ AACFile::factory(const io::MemoryMappedFile &memoryFile)
 AACFile::AACFile()
 {
 }
+
+namespace visitor
+{
+std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
+                                         const AACFile &)
+{
+	return std::make_shared<TagLib::MP4::File>(path.c_str(), true);
+}
+}
 }
 }

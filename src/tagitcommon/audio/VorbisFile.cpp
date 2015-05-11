@@ -18,9 +18,11 @@
 
 #include "VorbisFile.h"
 
-#include "tagitcommon/util/Bitwise.h"
-
 #include <cstring>
+
+#include <taglib/vorbisfile.h>
+
+#include "tagitcommon/util/Bitwise.h"
 
 namespace tagit
 {
@@ -77,6 +79,15 @@ VorbisFile::factory(const io::MemoryMappedFile &memoryFile)
 
 VorbisFile::VorbisFile()
 {
+}
+
+namespace visitor
+{
+std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
+                                         const VorbisFile &)
+{
+	return std::make_shared<TagLib::Ogg::Vorbis::File>(path.c_str(), true);
+}
 }
 }
 }

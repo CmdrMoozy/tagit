@@ -20,6 +20,8 @@
 
 #include <cstring>
 
+#include <taglib/wavfile.h>
+
 namespace tagit
 {
 namespace audio
@@ -44,6 +46,15 @@ WaveFile::factory(const io::MemoryMappedFile &memoryFile)
 
 WaveFile::WaveFile()
 {
+}
+
+namespace visitor
+{
+std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
+                                         const WaveFile &)
+{
+	return std::make_shared<TagLib::RIFF::WAV::File>(path.c_str(), true);
+}
 }
 }
 }

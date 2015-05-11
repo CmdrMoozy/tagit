@@ -97,13 +97,18 @@ void audioFileFactory(OptVariant_t &file,
 {
 	FactoryForEach<Sequence_t>(file, memoryFile);
 }
+
+TagLibFileVisitor::TagLibFileVisitor(const std::string &p) : path(p)
+{
+}
 }
 
-AudioFile::AudioFile() : path(), file(boost::none)
+AudioFile::AudioFile() : path(), file(boost::none), tagLibFile(nullptr)
 {
 }
 
-AudioFile::AudioFile(const std::string &p) : path(), file(boost::none)
+AudioFile::AudioFile(const std::string &p)
+        : path(), file(boost::none), tagLibFile(nullptr)
 {
 	boost::filesystem::path pathObj(p);
 	if(!boost::filesystem::exists(pathObj))
@@ -116,6 +121,12 @@ AudioFile::AudioFile(const std::string &p) : path(), file(boost::none)
 	detail::audioFileFactory(file, memoryFile);
 	if(!file)
 		path.clear();
+
+	if(!!file)
+	{
+		detail::TagLibFileVisitor visitor(path);
+		tagLibFile = boost::apply_visitor(visitor, *file);
+	}
 }
 
 bool AudioFile::operator!() const

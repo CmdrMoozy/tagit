@@ -19,7 +19,12 @@
 #ifndef TAGITCOMMON_AUDIO_FLAC_FILE_H
 #define TAGITCOMMON_AUDIO_FLAC_FILE_H
 
+#include <memory>
+#include <string>
+
 #include <boost/optional/optional.hpp>
+
+#include <taglib/fileref.h>
 
 #include "tagitcommon/io/MemoryMappedFile.h"
 
@@ -47,6 +52,12 @@ public:
 private:
 	FLACFile();
 };
+
+namespace visitor
+{
+std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
+                                         const FLACFile &file);
+}
 }
 }
 
