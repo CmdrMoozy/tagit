@@ -20,6 +20,9 @@
 
 #include <stdexcept>
 
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QListView>
@@ -35,6 +38,32 @@ namespace
 {
 const std::string LIBRARY_NAME = "library";
 const std::string INPUT_NAME = "input";
+
+bool isValidLibrary(const std::string &path)
+{
+	boost::filesystem::path pathObj(path);
+	if(!boost::filesystem::exists(pathObj) ||
+	   !boost::filesystem::is_directory(pathObj))
+	{
+		return false;
+	}
+
+	boost::filesystem::path libraryPathObj = pathObj / "Library";
+	if(!boost::filesystem::exists(libraryPathObj) ||
+	   !boost::filesystem::is_directory(libraryPathObj))
+	{
+		return false;
+	}
+
+	boost::filesystem::path portablePathObj = pathObj / "Portable";
+	if(!boost::filesystem::exists(portablePathObj) ||
+	   !boost::filesystem::is_directory(portablePathObj))
+	{
+		return false;
+	}
+
+	return true;
+}
 }
 
 namespace tagit
@@ -119,6 +148,19 @@ void MainWindow::doInputPathChanged()
 
 void MainWindow::doApplyPaths()
 {
+	std::string libraryPath =
+	        pathInputs->getPath(LIBRARY_NAME).toStdString();
+	if(libraryPath.length() == 0)
+		return;
+
+	if(!isValidLibrary(libraryPath))
+	{
+		QMessageBox::critical(
+		        this, tr("Error"),
+		        "The specified music library is invalid.");
+		return;
+	}
+
 	std::string path = pathInputs->getPath(INPUT_NAME).toStdString();
 	if(path.length() == 0)
 		return;
@@ -126,13 +168,14 @@ void MainWindow::doApplyPaths()
 	try
 	{
 		tracksModel->setPath(path);
-
-		applyButton->setEnabled(false);
 	}
 	catch(const std::runtime_error &e)
 	{
 		QMessageBox::critical(this, tr("Error"), tr(e.what()));
+		return;
 	}
+
+	applyButton->setEnabled(false);
 }
 }
 }
