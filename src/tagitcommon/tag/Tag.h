@@ -23,10 +23,18 @@
 
 #include <QString>
 
+#include <taglib/fileref.h>
+#include <taglib/tstring.h>
+
 namespace tagit
 {
 namespace tag
 {
+namespace util
+{
+QString tagStringToQString(const TagLib::String &str);
+}
+
 struct Tag
 {
 	QString title;

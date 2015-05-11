@@ -18,10 +18,23 @@
 
 #include "Tag.h"
 
+#include <taglib/tag.h>
+#include <taglib/tstring.h>
+
 namespace tagit
 {
 namespace tag
 {
+namespace util
+{
+QString tagStringToQString(const TagLib::String &str)
+{
+	return QString::fromUtf16(
+	        reinterpret_cast<const ushort *>(str.toCWString()),
+	        static_cast<int>(str.length()));
+}
+}
+
 Tag::Tag()
         : title(""),
           artist(""),
