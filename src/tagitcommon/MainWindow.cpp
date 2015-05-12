@@ -139,6 +139,13 @@ MainWindow::MainWindow()
 	                 this, SLOT(doInputPathChanged()));
 	QObject::connect(applyButton, SIGNAL(clicked(bool)), this,
 	                 SLOT(doApplyPaths()));
+
+	QObject::connect(tracksView->selectionModel(),
+	                 SIGNAL(currentChanged(const QModelIndex &,
+	                                       const QModelIndex &)),
+	                 this,
+	                 SLOT(doCurrentTrackChanged(const QModelIndex &,
+	                                            const QModelIndex &)));
 }
 
 void MainWindow::doInputPathChanged()
@@ -178,6 +185,12 @@ void MainWindow::doApplyPaths()
 	applyButton->setEnabled(false);
 	tracksGroupBox->setEnabled(true);
 	tagGroupBox->setEnabled(true);
+}
+
+void MainWindow::doCurrentTrackChanged(const QModelIndex &current,
+                                       const QModelIndex &)
+{
+	tagWidget->setTag(tracksModel->fileAt(current).getTag());
 }
 }
 }

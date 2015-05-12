@@ -71,8 +71,10 @@ private:
 
 private Q_SLOTS:
 	void doInputPathChanged();
-
 	void doApplyPaths();
+
+	void doCurrentTrackChanged(const QModelIndex &current,
+	                           const QModelIndex &previous);
 };
 }
 }

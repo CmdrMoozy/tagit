@@ -48,6 +48,8 @@ public:
 	                    int role = Qt::DisplayRole) const;
 	QVariant data(const QModelIndex &i, int role = Qt::DisplayRole) const;
 
+	const AudioFile &fileAt(const QModelIndex &i) const;
+
 private:
 	std::vector<AudioFile> files;
 

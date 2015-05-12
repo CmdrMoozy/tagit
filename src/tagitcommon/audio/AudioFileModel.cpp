@@ -70,6 +70,12 @@ QVariant AudioFileModel::data(const QModelIndex &i, int role) const
 	}
 }
 
+const AudioFile &AudioFileModel::fileAt(const QModelIndex &i) const
+{
+	auto idx = static_cast<decltype(files)::size_type>(i.row());
+	return files[idx];
+}
+
 void AudioFileModel::loadFiles(const std::string &path, bool signals)
 {
 	bool nonempty = files.size() > 0;
