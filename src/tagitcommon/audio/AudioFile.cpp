@@ -35,6 +35,16 @@ namespace
 static_assert(false, "boost::variant must support type sequences.");
 #endif
 
+template <typename A, typename B> int compareUInts(A a, B b)
+{
+	if(a < b)
+		return -1;
+	else if(a > b)
+		return 1;
+	else
+		return 0;
+}
+
 struct CallFactoryFunction
 {
 	template <typename T>
@@ -155,6 +165,43 @@ std::string AudioFile::getFilename() const
 const tagit::tag::Tag &AudioFile::getTag() const
 {
 	return tag;
+}
+
+bool AudioFileComparator::operator()(const AudioFile &a, const AudioFile &b)
+{
+	if(!!a && !!b)
+	{
+		int cmp = a.getTag().artist.compare(b.getTag().artist);
+		if(cmp != 0)
+			return cmp < 0;
+
+		cmp = compareUInts(a.getTag().year, b.getTag().year);
+		if(cmp != 0)
+			return cmp < 0;
+
+		cmp = a.getTag().album.compare(b.getTag().album);
+		if(cmp != 0)
+			return cmp < 0;
+
+		cmp = compareUInts(a.getTag().cd, b.getTag().cd);
+		if(cmp != 0)
+			return cmp < 0;
+
+		cmp = compareUInts(a.getTag().track, b.getTag().track);
+		if(cmp != 0)
+			return cmp < 0;
+
+		cmp = a.getTag().title.compare(b.getTag().title);
+		if(cmp != 0)
+			return cmp < 0;
+	}
+
+	if(!a && !!b)
+		return false;
+	else if(!!a && !b)
+		return true;
+
+	return a.getFilename().compare(b.getFilename()) < 0;
 }
 }
 }

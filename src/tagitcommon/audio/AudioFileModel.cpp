@@ -18,6 +18,7 @@
 
 #include "AudioFileModel.h"
 
+#include <algorithm>
 #include <stdexcept>
 #include <utility>
 
@@ -110,6 +111,8 @@ void AudioFileModel::loadFiles(const std::string &path, bool signals)
 		beginInsertRows(QModelIndex(), 0, newFiles.size() - 1);
 
 	files = std::move(newFiles);
+	AudioFileComparator comparator;
+	std::sort(files.begin(), files.end(), comparator);
 
 	if(signals)
 		endInsertRows();

@@ -176,6 +176,8 @@ void MainWindow::doApplyPaths()
 	}
 
 	applyButton->setEnabled(false);
+	tracksGroupBox->setEnabled(true);
+	tagGroupBox->setEnabled(true);
 }
 }
 }

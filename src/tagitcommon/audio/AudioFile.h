@@ -123,6 +123,11 @@ private:
 	std::shared_ptr<TagLib::File> tagLibFile;
 	tagit::tag::Tag tag;
 };
+
+struct AudioFileComparator
+{
+	bool operator()(const AudioFile &a, const AudioFile &b);
+};
 }
 }
 
