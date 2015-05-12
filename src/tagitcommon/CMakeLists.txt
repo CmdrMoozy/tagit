@@ -43,6 +43,7 @@ set(tagitcommon_SOURCES
 
 	util/Bitwise.cpp
 	util/Bitwise.h
+	util/ConstexprString.h
 	util/Errno.cpp
 	util/Errno.h
 	util/ScopeExit.cpp
