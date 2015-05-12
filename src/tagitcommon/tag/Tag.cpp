@@ -18,6 +18,9 @@
 
 #include "Tag.h"
 
+#include <cstring>
+#include <stdexcept>
+
 #include <taglib/tag.h>
 #include <taglib/tstring.h>
 
@@ -27,6 +30,28 @@ namespace tag
 {
 namespace util
 {
+const char *getTagGenre(uint8_t id)
+{
+	for(auto it = TAG_GENRE_MAP_BEGIN; it != TAG_GENRE_MAP_END; ++it)
+	{
+		if(it->first == id)
+			return it->second.get();
+	}
+
+	throw std::runtime_error("Tag genre not found.");
+}
+
+uint8_t getTagGenreID(const std::string &tag)
+{
+	for(auto it = TAG_GENRE_MAP_BEGIN; it != TAG_GENRE_MAP_END; ++it)
+	{
+		if(strcmp(it->second.get(), tag.c_str()) == 0)
+			return it->first;
+	}
+
+	throw std::runtime_error("Tag genre ID not found.");
+}
+
 QString tagStringToQString(const TagLib::String &str)
 {
 	return QString::fromUtf16(
