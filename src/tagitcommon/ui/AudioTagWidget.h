@@ -46,9 +46,10 @@ public:
 	AudioTagWidget &operator=(const AudioTagWidget &) = delete;
 
 	tagit::tag::Tag getTag() const;
+	void setTag(const tagit::tag::Tag t);
 
 private:
-	tagit::tag::Tag tag;
+	mutable tagit::tag::Tag tag;
 
 	QGridLayout *layout;
 	QLabel *titleLabel;
@@ -67,6 +68,8 @@ private:
 	QSpinBox *tracksInput;
 	QLabel *genreLabel;
 	QComboBox *genreInput;
+
+	void apply() const;
 };
 }
 }
