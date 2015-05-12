@@ -19,6 +19,7 @@
 #include "VorbisFile.h"
 
 #include <cstring>
+#include <stdexcept>
 
 #include <taglib/vorbisfile.h>
 
@@ -87,6 +88,16 @@ std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
                                          const VorbisFile &)
 {
 	return std::make_shared<TagLib::Ogg::Vorbis::File>(path.c_str(), true);
+}
+
+tagit::tag::Tag getTag(const VorbisFile &, const TagLib::File *tagLibFile)
+{
+	const TagLib::Ogg::Vorbis::File *file =
+	        dynamic_cast<const TagLib::Ogg::Vorbis::File *>(tagLibFile);
+	if(file == nullptr)
+		throw std::runtime_error("Invalid TagLib File type.");
+
+	return tagit::tag::Tag(file->tag());
 }
 }
 }

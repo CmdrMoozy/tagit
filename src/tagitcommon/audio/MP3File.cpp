@@ -20,9 +20,12 @@
 
 #include <cstddef>
 #include <cstring>
+#include <stdexcept>
 
+#include <taglib/id3v1tag.h>
 #include <taglib/mpegfile.h>
 
+#include "tagitcommon/audio/Utils.h"
 #include "tagitcommon/util/Bitwise.h"
 
 namespace
@@ -109,6 +112,29 @@ std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
                                          const MP3File &)
 {
 	return std::make_shared<TagLib::MPEG::File>(path.c_str(), true);
+}
+
+tagit::tag::Tag getTag(const MP3File &, const TagLib::File *tagLibFile)
+{
+	const TagLib::MPEG::File *mpegFile =
+	        dynamic_cast<const TagLib::MPEG::File *>(tagLibFile);
+	if(mpegFile == nullptr)
+		throw std::runtime_error("Invalid TagLib File type.");
+
+	if(mpegFile->hasID3v1Tag())
+	{
+		const TagLib::ID3v1::Tag *tag =
+		        const_cast<TagLib::MPEG::File *>(mpegFile)->ID3v1Tag();
+		tagit::tag::Tag tagObj(tag);
+		return tagObj;
+	}
+	else if(mpegFile->hasID3v2Tag())
+	{
+		return utils::getID3v2Tag(
+		        const_cast<TagLib::MPEG::File *>(mpegFile)->ID3v2Tag());
+	}
+
+	return tagit::tag::Tag();
 }
 }
 }

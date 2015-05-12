@@ -19,8 +19,13 @@
 #include "FLACFile.h"
 
 #include <cstring>
+#include <stdexcept>
 
+#include <taglib/id3v1tag.h>
 #include <taglib/flacfile.h>
+#include <taglib/xiphcomment.h>
+
+#include "tagitcommon/audio/Utils.h"
 
 namespace tagit
 {
@@ -50,6 +55,37 @@ std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
                                          const FLACFile &)
 {
 	return std::make_shared<TagLib::FLAC::File>(path.c_str(), true);
+}
+
+tagit::tag::Tag getTag(const FLACFile &, const TagLib::File *tagLibFile)
+{
+	const TagLib::FLAC::File *flacFile =
+	        dynamic_cast<const TagLib::FLAC::File *>(tagLibFile);
+	if(flacFile == nullptr)
+		throw std::runtime_error("Wrong TagLib File type.");
+
+	if(flacFile->hasXiphComment())
+	{
+		const TagLib::Ogg::XiphComment *tag =
+		        const_cast<TagLib::FLAC::File *>(flacFile)
+		                ->xiphComment();
+		tagit::tag::Tag tagObj(tag);
+		return tagObj;
+	}
+	else if(flacFile->hasID3v1Tag())
+	{
+		const TagLib::ID3v1::Tag *tag =
+		        const_cast<TagLib::FLAC::File *>(flacFile)->ID3v1Tag();
+		tagit::tag::Tag tagObj(tag);
+		return tagObj;
+	}
+	else if(flacFile->hasID3v2Tag())
+	{
+		return utils::getID3v2Tag(
+		        const_cast<TagLib::FLAC::File *>(flacFile)->ID3v2Tag());
+	}
+
+	return tagit::tag::Tag();
 }
 }
 }

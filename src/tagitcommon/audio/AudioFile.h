@@ -34,6 +34,7 @@
 #include "tagitcommon/audio/MP3File.h"
 #include "tagitcommon/audio/VorbisFile.h"
 #include "tagitcommon/audio/WaveFile.h"
+#include "tagitcommon/tag/Tag.h"
 #include "tagitcommon/util/VariantUtils.h"
 
 namespace tagit
@@ -58,10 +59,32 @@ struct TagLibFileVisitor
 
 	TagLibFileVisitor(const std::string &p);
 
+	TagLibFileVisitor(const TagLibFileVisitor &) = default;
+	~TagLibFileVisitor() = default;
+
+	TagLibFileVisitor &operator=(const TagLibFileVisitor &) = default;
+
 	template <typename T>
 	std::shared_ptr<TagLib::File> operator()(const T &t)
 	{
 		return tagit::audio::visitor::tagLibFile(path, t);
+	}
+};
+
+struct GetTagVisitor : public boost::static_visitor<tagit::tag::Tag>
+{
+	const TagLib::File *tagLibFile;
+
+	GetTagVisitor(const TagLib::File *f);
+
+	GetTagVisitor(const GetTagVisitor &) = default;
+	~GetTagVisitor() = default;
+
+	GetTagVisitor &operator=(const GetTagVisitor &) = default;
+
+	template <typename T> tagit::tag::Tag operator()(const T &t)
+	{
+		return tagit::audio::visitor::getTag(t, tagLibFile);
 	}
 };
 }
@@ -92,10 +115,13 @@ public:
 	std::string getPath() const;
 	std::string getFilename() const;
 
+	const tagit::tag::Tag &getTag() const;
+
 private:
 	std::string path;
 	detail::OptVariant_t file;
 	std::shared_ptr<TagLib::File> tagLibFile;
+	tagit::tag::Tag tag;
 };
 }
 }

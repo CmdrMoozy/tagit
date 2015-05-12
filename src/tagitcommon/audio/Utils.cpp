@@ -23,7 +23,11 @@
 #include <cstring>
 #include <functional>
 #include <locale>
+#include <stdexcept>
 #include <string>
+
+#include <taglib/mp4item.h>
+#include <taglib/mp4tag.h>
 
 #include "tagitcommon/util/Bitwise.h"
 
@@ -68,6 +72,57 @@ bool isMP4AudioFile(const tagit::io::MemoryMappedFile &file)
 	}
 
 	return found;
+}
+
+tagit::tag::Tag getMP4Tag(const TagLib::File *tagLibFile)
+{
+	const TagLib::MP4::Tag *tag =
+	        dynamic_cast<const TagLib::MP4::Tag *>(tagLibFile->tag());
+	if(tag == nullptr)
+		throw std::runtime_error("Invalid TagLib file type.");
+	const TagLib::MP4::ItemListMap &itemMap =
+	        const_cast<TagLib::MP4::Tag *>(tag)->itemListMap();
+
+	tagit::tag::Tag tagObj(tag);
+	auto it = itemMap.find("disk");
+	if(it != itemMap.end())
+		tagObj.cd = static_cast<uint64_t>(it->second.toUInt());
+
+	return tagObj;
+}
+
+tagit::tag::Tag getID3v2Tag(const TagLib::ID3v2::Tag *tag)
+{
+	tagit::tag::Tag tagObj(tag);
+
+	auto cdIt = tag->frameListMap().find("TPOS");
+	if(cdIt != tag->frameListMap().end())
+	{
+		TagLib::String cd = cdIt->second.front()->toString();
+		int slashOff = cd.find("/");
+		if(slashOff != -1)
+		{
+			cd = cd.substr(static_cast<TagLib::uint>(slashOff + 1));
+			tagObj.cd =
+			        static_cast<uint64_t>(std::stoul(cd.to8Bit()));
+		}
+	}
+
+	auto tracksIt = tag->frameListMap().find("TRCK");
+	if(tracksIt != tag->frameListMap().end())
+	{
+		TagLib::String tracks = tracksIt->second.front()->toString();
+		int slashOff = tracks.find("/");
+		if(slashOff != -1)
+		{
+			tracks = tracks.substr(
+			        static_cast<TagLib::uint>(slashOff + 1));
+			tagObj.tracks = static_cast<uint64_t>(
+			        std::stoul(tracks.to8Bit()));
+		}
+	}
+
+	return tagObj;
 }
 }
 }

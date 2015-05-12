@@ -46,5 +46,15 @@ Tag::Tag()
           genre("")
 {
 }
+
+Tag::Tag(const TagLib::Tag *tag) : Tag()
+{
+	title = util::tagStringToQString(tag->title());
+	artist = util::tagStringToQString(tag->artist());
+	album = util::tagStringToQString(tag->album());
+	year = static_cast<uint64_t>(tag->year());
+	track = static_cast<uint64_t>(tag->track());
+	genre = util::tagStringToQString(tag->genre());
+}
 }
 }

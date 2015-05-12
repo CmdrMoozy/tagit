@@ -47,6 +47,20 @@ struct Tag
 	QString genre;
 
 	Tag();
+
+	/*!
+	 * Load most portions of a Tag structure from the given generic TagLib
+	 * tag. Note that this doesn't include all fields: "cd" and "tracks"
+	 * are nonstandard, and are not supported by all tag types.
+	 *
+	 * \param tag The TagLib tag structure to load data from.
+	 */
+	Tag(const TagLib::Tag *tag);
+
+	Tag(const Tag &) = default;
+	~Tag() = default;
+
+	Tag &operator=(const Tag &) = default;
 };
 }
 }

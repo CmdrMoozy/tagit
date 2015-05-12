@@ -19,8 +19,11 @@
 #include "WaveFile.h"
 
 #include <cstring>
+#include <stdexcept>
 
 #include <taglib/wavfile.h>
+
+#include "tagitcommon/audio/Utils.h"
 
 namespace tagit
 {
@@ -54,6 +57,21 @@ std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
                                          const WaveFile &)
 {
 	return std::make_shared<TagLib::RIFF::WAV::File>(path.c_str(), true);
+}
+
+tagit::tag::Tag getTag(const WaveFile &, const TagLib::File *tagLibFile)
+{
+	const TagLib::RIFF::WAV::File *file =
+	        dynamic_cast<const TagLib::RIFF::WAV::File *>(tagLibFile);
+	if(file == nullptr)
+		throw std::runtime_error("Invalid TagLib File type.");
+
+	if(file->hasID3v2Tag())
+		return utils::getID3v2Tag(file->ID3v2Tag());
+	else if(file->hasInfoTag())
+		return tagit::tag::Tag(file->InfoTag());
+
+	return tagit::tag::Tag();
 }
 }
 }

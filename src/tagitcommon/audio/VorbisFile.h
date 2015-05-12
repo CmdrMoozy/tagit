@@ -27,6 +27,7 @@
 #include <taglib/fileref.h>
 
 #include "tagitcommon/io/MemoryMappedFile.h"
+#include "tagitcommon/tag/Tag.h"
 
 namespace tagit
 {
@@ -57,6 +58,8 @@ namespace visitor
 {
 std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
                                          const VorbisFile &file);
+
+tagit::tag::Tag getTag(const VorbisFile &file, const TagLib::File *tagLibFile);
 }
 }
 }

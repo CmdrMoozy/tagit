@@ -19,7 +19,10 @@
 #ifndef TAGITCOMMON_AUDIO_UTILS_H
 #define TAGITCOMMON_AUDIO_UTILS_H
 
+#include <taglib/id3v2tag.h>
+
 #include "tagitcommon/io/MemoryMappedFile.h"
+#include "tagitcommon/tag/Tag.h"
 
 namespace tagit
 {
@@ -32,6 +35,10 @@ namespace utils
  * \return True if the file is an MP4 audio file (AAC or ALAC).
  */
 bool isMP4AudioFile(const tagit::io::MemoryMappedFile &file);
+
+tagit::tag::Tag getMP4Tag(const TagLib::File *tagLibFile);
+
+tagit::tag::Tag getID3v2Tag(const TagLib::ID3v2::Tag *tag);
 }
 }
 }

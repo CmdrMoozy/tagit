@@ -101,6 +101,10 @@ void audioFileFactory(OptVariant_t &file,
 TagLibFileVisitor::TagLibFileVisitor(const std::string &p) : path(p)
 {
 }
+
+GetTagVisitor::GetTagVisitor(const TagLib::File *f) : tagLibFile(f)
+{
+}
 }
 
 AudioFile::AudioFile() : path(), file(boost::none), tagLibFile(nullptr)
@@ -124,8 +128,11 @@ AudioFile::AudioFile(const std::string &p)
 
 	if(!!file)
 	{
-		detail::TagLibFileVisitor visitor(path);
-		tagLibFile = boost::apply_visitor(visitor, *file);
+		detail::TagLibFileVisitor fileVisitor(path);
+		tagLibFile = boost::apply_visitor(fileVisitor, *file);
+
+		detail::GetTagVisitor tagVisitor(tagLibFile.get());
+		tag = boost::apply_visitor(tagVisitor, *file);
 	}
 }
 
@@ -143,6 +150,11 @@ std::string AudioFile::getFilename() const
 {
 	boost::filesystem::path pathObj(path);
 	return pathObj.filename().string();
+}
+
+const tagit::tag::Tag &AudioFile::getTag() const
+{
+	return tag;
 }
 }
 }
