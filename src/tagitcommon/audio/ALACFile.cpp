@@ -57,7 +57,7 @@ std::shared_ptr<TagLib::File> tagLibFile(const std::string &path,
 	return std::make_shared<TagLib::MP4::File>(path.c_str(), true);
 }
 
-tagit::tag::Tag getTag(const ALACFile &file, const TagLib::File *tagLibFile)
+tagit::tag::Tag getTag(const ALACFile &, const TagLib::File *tagLibFile)
 {
 	return utils::getMP4Tag(tagLibFile);
 }
