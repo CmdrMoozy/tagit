@@ -18,8 +18,10 @@
 
 #include "Tag.h"
 
+#include <algorithm>
 #include <cstring>
 #include <stdexcept>
+#include <vector>
 
 #include <taglib/tag.h>
 #include <taglib/tstring.h>
@@ -54,9 +56,16 @@ uint8_t getTagGenreID(const std::string &tag)
 
 QString tagStringToQString(const TagLib::String &str)
 {
-	return QString::fromUtf16(
-	        reinterpret_cast<const ushort *>(str.toCWString()),
-	        static_cast<int>(str.length()));
+	static_assert(sizeof(wchar_t) >= 2,
+	              "wchar_t must be at least two bytes wide.");
+	static_assert(sizeof(ushort) >= 2,
+	              "ushort must be at least two bytes wide.");
+
+	std::vector<ushort> copy(str.length() + 1);
+	copy[0] = 0xFEFF;
+	std::copy(str.begin(), str.end(), &copy[1]);
+
+	return QString::fromUtf16(copy.data(), copy.size());
 }
 }
 

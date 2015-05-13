@@ -27,6 +27,7 @@
 #include "test/fs/FSTest.h"
 #include "test/fs/TemporaryStorageTest.h"
 #include "test/io/MemoryMappedFileTest.h"
+#include "test/tag/TagTest.h"
 #include "test/util/BitwiseTest.h"
 #include "test/util/ErrnoTest.h"
 #include "test/util/ScopeExitTest.h"
@@ -41,6 +42,7 @@ int main(int argc, char **argv)
 	        .add<tagit_test::fs::FSTest>()
 	        .add<tagit_test::fs::TemporaryStorageTest>()
 	        .add<tagit_test::io::MemoryMappedFileTest>()
+	        .add<tagit_test::tag::TagTest>()
 	        .add<tagit_test::util::BitwiseTest>()
 	        .add<tagit_test::util::ErrnoTest>()
 	        .add<tagit_test::util::ScopeExitTest>()

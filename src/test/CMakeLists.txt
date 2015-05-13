@@ -23,6 +23,9 @@ set(test_SOURCES
 	io/MemoryMappedFileTest.cpp
 	io/MemoryMappedFileTest.h
 
+	tag/TagTest.cpp
+	tag/TagTest.h
+
 	util/BitwiseTest.cpp
 	util/BitwiseTest.h
 	util/ErrnoTest.cpp
