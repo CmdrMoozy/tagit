@@ -131,6 +131,7 @@ const char *getTagGenre(uint8_t id);
 uint8_t getTagGenreID(const std::string &tag);
 
 QString tagStringToQString(const TagLib::String &str);
+TagLib::String qstringToTagString(const QString &str);
 }
 
 struct Tag

@@ -30,9 +30,23 @@ namespace
 {
 void testStringConversion(const std::string &str)
 {
-	vrfy::assert::assertEquals(
-	        QString::fromStdString(str),
-	        tagit::tag::util::tagStringToQString(TagLib::String(str)));
+	QString originalQString = QString::fromStdString(str);
+	TagLib::String originalTagString(str);
+
+	TagLib::String convertedQString =
+	        tagit::tag::util::qstringToTagString(originalQString);
+	QString convertedTagString =
+	        tagit::tag::util::tagStringToQString(originalTagString);
+
+	QString roundedQString =
+	        tagit::tag::util::tagStringToQString(convertedQString);
+	TagLib::String roundedTagString =
+	        tagit::tag::util::qstringToTagString(convertedTagString);
+
+	vrfy::assert::assertEquals(originalQString, convertedTagString);
+	vrfy::assert::assertEquals(convertedTagString, roundedQString);
+	vrfy::assert::assertEquals(originalTagString, convertedQString);
+	vrfy::assert::assertEquals(convertedQString, roundedTagString);
 }
 
 void testStringConversion()

@@ -63,9 +63,25 @@ QString tagStringToQString(const TagLib::String &str)
 
 	std::vector<ushort> copy(str.length() + 1);
 	copy[0] = 0xFEFF;
-	std::copy(str.begin(), str.end(), &copy[1]);
+	std::copy(str.begin(), str.end(), copy.data() + 1);
 
 	return QString::fromUtf16(copy.data(), copy.size());
+}
+
+TagLib::String qstringToTagString(const QString &str)
+{
+	static_assert(sizeof(wchar_t) >= 2,
+	              "wchar_t must be at least two bytes wide.");
+	static_assert(sizeof(ushort) >= 2,
+	              "ushort must be at least two bytes wide.");
+
+	std::vector<wchar_t> copy(
+	        static_cast<std::vector<wchar_t>::size_type>(str.length()) + 1);
+	copy[copy.size() - 1] = 0;
+	const ushort *data = str.utf16();
+	std::copy(data, data + str.length(), copy.data());
+
+	return TagLib::String(copy.data());
 }
 }
 
