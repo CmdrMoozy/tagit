@@ -48,6 +48,8 @@ set(tagitcommon_SOURCES
 	util/Errno.h
 	util/ScopeExit.cpp
 	util/ScopeExit.h
+	util/String.cpp
+	util/String.h
 	util/VariantUtils.h
 
 )
