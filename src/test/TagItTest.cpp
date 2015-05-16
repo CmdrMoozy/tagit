@@ -31,6 +31,7 @@
 #include "test/util/BitwiseTest.h"
 #include "test/util/ErrnoTest.h"
 #include "test/util/ScopeExitTest.h"
+#include "test/util/StringTest.h"
 
 int main(int argc, char **argv)
 {
@@ -46,6 +47,7 @@ int main(int argc, char **argv)
 	        .add<tagit_test::util::BitwiseTest>()
 	        .add<tagit_test::util::ErrnoTest>()
 	        .add<tagit_test::util::ScopeExitTest>()
+	        .add<tagit_test::util::StringTest>()
 	        .execute();
 
 	return 0;

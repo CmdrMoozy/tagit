@@ -32,6 +32,8 @@ set(test_SOURCES
 	util/ErrnoTest.h
 	util/ScopeExitTest.cpp
 	util/ScopeExitTest.h
+	util/StringTest.cpp
+	util/StringTest.h
 
 )
 
