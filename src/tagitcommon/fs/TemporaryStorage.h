@@ -58,7 +58,6 @@ public:
 private:
 	static std::mutex constructionMutex;
 
-	TemporaryStorageType type;
 	std::string path;
 };
 }

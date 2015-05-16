@@ -30,7 +30,7 @@ namespace fs
 {
 std::mutex TemporaryStorage::constructionMutex;
 
-TemporaryStorage::TemporaryStorage(TemporaryStorageType t) : type(t)
+TemporaryStorage::TemporaryStorage(TemporaryStorageType t)
 {
 	static const std::string model = "tagit-%%%%-%%%%-%%%%-%%%%";
 
