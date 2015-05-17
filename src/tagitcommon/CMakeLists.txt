@@ -51,6 +51,8 @@ set(tagitcommon_SOURCES
 	util/String.cpp
 	util/String.h
 	util/VariantUtils.h
+	util/visualAsciiTranslationMap.cpp
+	util/visualAsciiTranslationMap.h
 
 )
 
