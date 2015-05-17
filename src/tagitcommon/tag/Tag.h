@@ -160,6 +160,8 @@ struct Tag
 	~Tag() = default;
 
 	Tag &operator=(const Tag &) = default;
+
+	QString getFilename(bool includeCD = false) const;
 };
 }
 }

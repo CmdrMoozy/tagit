@@ -53,6 +53,12 @@ void testStringConversion()
 {
 	testStringConversion("Test String");
 }
+
+void testGetFilename()
+{
+	tagit::tag::Tag tag;
+	tag.getFilename();
+}
 }
 
 namespace tagit_test
@@ -62,6 +68,7 @@ namespace tag
 void TagTest::test()
 {
 	testStringConversion();
+	testGetFilename();
 }
 }
 }

@@ -23,8 +23,42 @@
 #include <stdexcept>
 #include <vector>
 
+#include <QByteArray>
+#include <QList>
+#include <QTextCodec>
+#include <QTextStream>
+
 #include <taglib/tag.h>
 #include <taglib/tstring.h>
+
+namespace
+{
+template <typename T>
+void
+writeFixedWidth(QTextStream &stream, T value, std::size_t width,
+                QChar pad = '0',
+                QTextStream::FieldAlignment alignment = QTextStream::AlignRight)
+{
+	int oldWidth = stream.fieldWidth();
+	QChar oldPad = stream.padChar();
+	QTextStream::FieldAlignment oldAlignment = stream.fieldAlignment();
+
+	stream.setFieldWidth(width);
+	stream.setPadChar(pad);
+	stream.setFieldAlignment(alignment);
+
+	stream << value;
+
+	stream.setFieldWidth(oldWidth);
+	stream.setPadChar(oldPad);
+	stream.setFieldAlignment(oldAlignment);
+}
+
+QString titleToFilename(const QString &title)
+{
+	return title;
+}
+}
 
 namespace tagit
 {
@@ -105,6 +139,28 @@ Tag::Tag(const TagLib::Tag *tag) : Tag()
 	year = static_cast<uint64_t>(tag->year());
 	track = static_cast<uint64_t>(tag->track());
 	genre = util::tagStringToQString(tag->genre());
+}
+
+QString Tag::getFilename(bool includeCD) const
+{
+	QString filename;
+	QTextStream stream(&filename);
+	QTextCodec *codec = QTextCodec::codecForName("UTF-16");
+	if(codec == nullptr)
+		throw std::runtime_error("Couldn't get UTF-16 QTextCodec.");
+	stream.setCodec(codec);
+
+	if(includeCD)
+	{
+		writeFixedWidth(stream, cd, 2);
+		stream << '-';
+	}
+
+	writeFixedWidth(stream, track, 2);
+	stream << " ";
+	stream << titleToFilename(title);
+
+	return filename;
 }
 }
 }
