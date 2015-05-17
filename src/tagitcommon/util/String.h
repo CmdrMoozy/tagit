@@ -33,6 +33,22 @@ namespace string
  * \param str The string to alter.
  */
 void singleSpaced(QString &str);
+
+/*!
+ * This function translates the given string to ASCII "visually". That is,
+ * non-ASCII characters are replaced with those ASCII characters which are
+ * most visually similar to the input character. This means that marks like
+ * umlauts and accents and etc. are removed.
+ *
+ * The resulting string is not intended to be equivalent, but merely to look
+ * visually similar.
+ *
+ * Any unrecognized characters which can't be easily translated will merely
+ * be removed.
+ *
+ * \param str The string to process.
+ */
+void visualTranslateToASCII(QString &str);
 }
 }
 

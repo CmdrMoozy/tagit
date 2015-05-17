@@ -19,6 +19,9 @@
 #include "String.h"
 
 #include <iterator>
+#include <utility>
+
+#include "tagitcommon/util/visualAsciiTranslationMap.h"
 
 namespace tagit
 {
@@ -45,6 +48,23 @@ void singleSpaced(QString &str)
 	}
 
 	str.resize(str.size() - std::distance(out, end));
+}
+
+void visualTranslateToASCII(QString &str)
+{
+	QString processed;
+	processed.reserve(str.size());
+
+	for(const QChar &c : str)
+	{
+		auto it = detail::VISUAL_ASCII_TRANSLATION_MAP.find(c);
+		if(it != detail::VISUAL_ASCII_TRANSLATION_MAP.end())
+			processed.append(it->second);
+		else
+			processed.append(c);
+	}
+
+	str = std::move(processed);
 }
 }
 }
