@@ -33,10 +33,42 @@ void testSingleSpaced(const char *exp, const char *in)
 
 void testSingleSpaced()
 {
-	testSingleSpaced("Я знаю, что вы ждали всю свою жизнь, и, наконец, ты "
-	                 "здесь со мной сегодня вечером.",
+	testSingleSpaced("Я знаю, что вы ждали всю свою жизнь, и, наконец, "
+	                 "ты здесь со мной сегодня вечером.",
 	                 "Я знаю,     что вы ждали всю свою жизнь,\t\tи, "
 	                 "наконец, ты\t \tздесь со \t мной сегодня вечером.");
+}
+
+void testVisualTranslateToASCII(const char *exp, const char *in)
+{
+	QString out(in);
+	tagit::string::visualTranslateToASCII(out);
+	vrfy::assert::assertEquals<QString>(exp, out);
+}
+
+void testVisualTranslateToASCII()
+{
+	testVisualTranslateToASCII(
+	        " !\"#$%&'()*+,-./"
+	        "0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"
+	        "abcdefghijklmnopqrstuvwxyz{|}~cS(C)(R)"
+	        "uAAAAAAAECEEEEIIIIDNOOOOOxOUUUUYSSaaaaaaaeceeeeiiiionoooooouuu"
+	        "uyyAaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiIJijJjKkk"
+	        "LlLlLlLlLlNnNnNnnNnOoOoOoOEoeRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuW"
+	        "wYyYZzZzZzbBBbBbOCcDDDdEFfGYHVIIKklNnOOoOIoiPpRtTtTUuVYyZzDZDz"
+	        "dzLJLjljNJNjnjAaIiOoUuUuUuUuUuAaAaAEaeGgGgKkOoOojDZDzdzGgNnAaA"
+	        "EaeOoAaAaEeEeIiIiOoOoRrRrUuUuSsTtHhNdZzAaEeOoOoOoOoYylntjACcLY"
+	        "szBUEeJjQqRrYyBbDdFfMmPpSsTtWwWwWwYy",
+	        " !\"#$%&'()*+,-./"
+	        "0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"
+	        "abcdefghijklmnopqrstuvwxyz{|}~"
+	        "¢§©®µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùú"
+	        "ûüýÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹ"
+	        "ĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷ"
+	        "ŸŹźŻżŽžƀƁƂƃƄƅƆƇƈƉƊƋƌƎƑƒƓƔƕƖƗƘƙƚƝƞƟƠơƢƣƤƥƦƫƬƭƮƯưƲƳƴƵƶǄǅǆǇǈǉǊǋǌǍ"
+	        "ǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǰǱǲǳǴǵǸǹǺǻǼǽǾǿȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏȐ"
+	        "ȑȒȓȔȕȖȗȘșȚțȞȟȠȡȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳȴȵȶȷȺȻȼȽȾȿɀɃɄɆɇɈɉɊɋɌɍɎɏḂḃḊḋḞḟṀṁ"
+	        "ṖṗṠṡṪṫẀẁẂẃẄẅỲỳ");
 }
 }
 
@@ -47,6 +79,7 @@ namespace util
 void StringTest::test()
 {
 	testSingleSpaced();
+	testVisualTranslateToASCII();
 }
 }
 }
