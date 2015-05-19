@@ -41,6 +41,8 @@ set(tagitcommon_SOURCES
 	ui/PathInputWidget.cpp
 	ui/PathInputWidget.h
 
+	util/asciiFilenameTranslationMap.cpp
+	util/asciiFilenameTranslationMap.h
 	util/Bitwise.cpp
 	util/Bitwise.h
 	util/ConstexprString.h
