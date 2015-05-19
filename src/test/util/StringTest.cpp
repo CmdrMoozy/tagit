@@ -27,7 +27,7 @@ namespace
 void testSingleSpaced(const char *exp, const char *in)
 {
 	QString out(in);
-	tagit::string::singleSpaced(out);
+	tagit::string::singleSpace(out);
 	vrfy::assert::assertEquals<QString>(exp, out);
 }
 

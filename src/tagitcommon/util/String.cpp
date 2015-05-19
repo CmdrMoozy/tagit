@@ -21,13 +21,45 @@
 #include <iterator>
 #include <utility>
 
+#include "tagitcommon/util/asciiFilenameTranslationMap.h"
 #include "tagitcommon/util/visualAsciiTranslationMap.h"
+
+namespace
+{
+void translateString(QString &str,
+                     const std::map<QChar, QString> &translationMap)
+{
+	QString processed;
+	processed.reserve(str.size());
+
+	for(const QChar &c : str)
+	{
+		auto it = translationMap.find(c);
+		if(it != translationMap.end())
+			processed.append(it->second);
+		else
+			processed.append(c);
+	}
+
+	str = std::move(processed);
+}
+}
 
 namespace tagit
 {
 namespace string
 {
-void singleSpaced(QString &str)
+void visualTranslateToASCII(QString &str)
+{
+	translateString(str, detail::VISUAL_ASCII_TRANSLATION_MAP);
+}
+
+void translateASCIIToFilename(QString &str)
+{
+	translateString(str, detail::ASCII_FILENAME_TRANSLATION_MAP);
+}
+
+void singleSpace(QString &str)
 {
 	QString::iterator out = str.begin();
 	QString::iterator in = str.begin();
@@ -48,23 +80,6 @@ void singleSpaced(QString &str)
 	}
 
 	str.resize(str.size() - std::distance(out, end));
-}
-
-void visualTranslateToASCII(QString &str)
-{
-	QString processed;
-	processed.reserve(str.size());
-
-	for(const QChar &c : str)
-	{
-		auto it = detail::VISUAL_ASCII_TRANSLATION_MAP.find(c);
-		if(it != detail::VISUAL_ASCII_TRANSLATION_MAP.end())
-			processed.append(it->second);
-		else
-			processed.append(c);
-	}
-
-	str = std::move(processed);
 }
 }
 }

@@ -26,15 +26,6 @@ namespace tagit
 namespace string
 {
 /*!
- * This function alters the given string such that it contains only normal
- * ASCII space characters (' '), and that any series of more than one space
- * is replaced with only a single space.
- *
- * \param str The string to alter.
- */
-void singleSpaced(QString &str);
-
-/*!
  * This function translates the given string to ASCII "visually". That is,
  * non-ASCII characters are replaced with those ASCII characters which are
  * most visually similar to the input character. This means that marks like
@@ -49,6 +40,31 @@ void singleSpaced(QString &str);
  * \param str The string to process.
  */
 void visualTranslateToASCII(QString &str);
+
+/*!
+ * This function translates the given ASCII string to a string which is
+ * suitable for filenames. Some characters will be replaced (e.g., '&'
+ * becomes "And"), and other invalid characters will merely be omitted (e.g.,
+ * '\n'.
+ *
+ * If the given string could contain non-ASCII characters,
+ * visualTranslateToASCII should be called on the string first.
+ *
+ * NOTE: This function can insert extra spaces into the given string. After
+ * calling this function, singleSpaced and trim should be called.
+ *
+ * \param str The string to process.
+ */
+void translateASCIIToFilename(QString &str);
+
+/*!
+ * This function alters the given string such that it contains only normal
+ * ASCII space characters (' '), and that any series of more than one space
+ * is replaced with only a single space.
+ *
+ * \param str The string to alter.
+ */
+void singleSpace(QString &str);
 }
 }
 
