@@ -38,19 +38,17 @@ int main(int argc, char **argv)
 	QApplication app(argc, argv, false);
 
 	vrfy::Tests tests;
-	tests.add<tagit_test::fs::EnvironmentTest>()
-	        .add<tagit_test::audio::AudioFileTest>()
-	        .add<tagit_test::fs::FSTest>()
-	        .add<tagit_test::fs::TemporaryStorageTest>()
-	        .add<tagit_test::io::MemoryMappedFileTest>()
-	        .add<tagit_test::tag::TagTest>()
-	        .add<tagit_test::util::BitwiseTest>()
-	        .add<tagit_test::util::ErrnoTest>()
-	        .add<tagit_test::util::ScopeExitTest>()
-	        .add<tagit_test::util::StringTest>()
-	        .execute();
+	bool success = tests.add<tagit_test::fs::EnvironmentTest>()
+	                       .add<tagit_test::audio::AudioFileTest>()
+	                       .add<tagit_test::fs::FSTest>()
+	                       .add<tagit_test::fs::TemporaryStorageTest>()
+	                       .add<tagit_test::io::MemoryMappedFileTest>()
+	                       .add<tagit_test::tag::TagTest>()
+	                       .add<tagit_test::util::BitwiseTest>()
+	                       .add<tagit_test::util::ErrnoTest>()
+	                       .add<tagit_test::util::ScopeExitTest>()
+	                       .add<tagit_test::util::StringTest>()
+	                       .execute();
 
-	return 0;
-
-	return EXIT_SUCCESS;
+	return success ? EXIT_SUCCESS : EXIT_FAILURE;
 }

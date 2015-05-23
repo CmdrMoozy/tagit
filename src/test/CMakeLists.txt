@@ -44,3 +44,5 @@ qt5_add_resources(test_RESOURCES_RCC ${test_RESOURCES})
 add_executable(tagit-test ${test_RESOURCES_RCC} ${test_SOURCES})
 target_link_libraries(tagit-test ${tagit_LIBRARIES} tagitcommon ${Vrfy_LIBS})
 qt5_use_modules(tagit-test ${tagit_QT5_MODULES})
+
+add_test(TagitTest tagit-test)

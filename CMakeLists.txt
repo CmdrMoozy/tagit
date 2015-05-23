@@ -67,6 +67,8 @@ endif()
 
 # Add our targets.
 
+enable_testing()
+
 add_subdirectory(src/tagitcommon)
 add_subdirectory(src/tagit)
 
