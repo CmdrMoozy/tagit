@@ -24,21 +24,6 @@
 
 namespace
 {
-void testSingleSpaced(const char *exp, const char *in)
-{
-	QString out(in);
-	tagit::string::singleSpace(out);
-	vrfy::assert::assertEquals<QString>(exp, out);
-}
-
-void testSingleSpaced()
-{
-	testSingleSpaced("Я знаю, что вы ждали всю свою жизнь, и, наконец, "
-	                 "ты здесь со мной сегодня вечером.",
-	                 "Я знаю,     что вы ждали всю свою жизнь,\t\tи, "
-	                 "наконец, ты\t \tздесь со \t мной сегодня вечером.");
-}
-
 void testVisualTranslateToASCII(const char *exp, const char *in)
 {
 	QString out(in);
@@ -70,6 +55,37 @@ void testVisualTranslateToASCII()
 	        "ȑȒȓȔȕȖȗȘșȚțȞȟȠȡȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳȴȵȶȷȺȻȼȽȾȿɀɃɄɆɇɈɉɊɋɌɍɎɏḂḃḊḋḞḟṀṁ"
 	        "ṖṗṠṡṪṫẀẁẂẃẄẅỲỳ");
 }
+
+void testTranslateASCIIToFilename(const char *exp, const char *in)
+{
+	QString out(in);
+	tagit::string::translateASCIIToFilename(out);
+	vrfy::assert::assertEquals<QString>(exp, out);
+}
+
+void testTranslateASCIIToFilename()
+{
+	testTranslateASCIIToFilename(
+	        " S And '() And  - 0123456789 - AtABCDEFGHIJKLMNOPQRSTUVWXYZ() "
+	        "- abcdefghijklmnopqrstuvwxyz()",
+	        " $&\'()+-0123456789:@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]_"
+	        "abcdefghijklmnopqrstuvwxyz{}");
+}
+
+void testSingleSpaced(const char *exp, const char *in)
+{
+	QString out(in);
+	tagit::string::singleSpace(out);
+	vrfy::assert::assertEquals<QString>(exp, out);
+}
+
+void testSingleSpaced()
+{
+	testSingleSpaced("Я знаю, что вы ждали всю свою жизнь, и, наконец, "
+	                 "ты здесь со мной сегодня вечером.",
+	                 "Я знаю,     что вы ждали всю свою жизнь,\t\tи, "
+	                 "наконец, ты\t \tздесь со \t мной сегодня вечером.");
+}
 }
 
 namespace tagit_test
@@ -80,6 +96,7 @@ void StringTest::test()
 {
 	testSingleSpaced();
 	testVisualTranslateToASCII();
+	testTranslateASCIIToFilename();
 }
 }
 }
