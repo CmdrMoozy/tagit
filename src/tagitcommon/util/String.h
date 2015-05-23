@@ -65,6 +65,14 @@ void translateASCIIToFilename(QString &str);
  * \param str The string to alter.
  */
 void singleSpace(QString &str);
+
+/*!
+ * This function trims the given string, by removing any leading or trailing
+ * whitespace from the string.
+ *
+ * \param str The string to alter.
+ */
+void trim(QString &str);
 }
 }
 

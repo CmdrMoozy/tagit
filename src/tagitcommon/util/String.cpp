@@ -82,5 +82,26 @@ void singleSpace(QString &str)
 
 	str.resize(str.size() - std::distance(out, end));
 }
+
+void trim(QString &str)
+{
+	for(int i = 0; i < str.length(); ++i)
+	{
+		if(!str[i].isSpace())
+		{
+			str.remove(0, i);
+			break;
+		}
+	}
+
+	for(int i = (str.length() - 1); i >= 0; --i)
+	{
+		if(!str[i].isSpace())
+		{
+			str.chop(str.length() - 1 - i);
+			break;
+		}
+	}
+}
 }
 }

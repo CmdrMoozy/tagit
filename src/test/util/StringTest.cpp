@@ -86,6 +86,19 @@ void testSingleSpaced()
 	                 "Я знаю,     что вы ждали всю свою жизнь,\t\tи, "
 	                 "наконец, ты\t \tздесь со \t мной сегодня вечером.");
 }
+
+void testTrim(const char *exp, const char *in)
+{
+	QString out(in);
+	tagit::string::trim(out);
+	vrfy::assert::assertEquals<QString>(exp, out);
+}
+
+void testTrim()
+{
+	testTrim("foo  \t  bar \n baz",
+	         "\t\n\r \t\t foo  \t  bar \n baz\n\t     ");
+}
 }
 
 namespace tagit_test
@@ -97,6 +110,7 @@ void StringTest::test()
 	testSingleSpaced();
 	testVisualTranslateToASCII();
 	testTranslateASCIIToFilename();
+	testTrim();
 }
 }
 }
