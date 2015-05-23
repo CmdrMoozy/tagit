@@ -54,10 +54,21 @@ void testStringConversion()
 	testStringConversion("Test String");
 }
 
-void testGetFilename()
+void testGetFilename(const char *exp, const char *title, uint64_t track,
+                     uint64_t cd = 1, uint64_t cds = 1)
 {
 	tagit::tag::Tag tag;
-	tag.getFilename();
+	tag.title = QString(title);
+	tag.cd = cd;
+	tag.track = track;
+
+	vrfy::assert::assertEquals<QString>(exp, tag.getFilename(cds > 1));
+}
+
+void testGetFilename()
+{
+	testGetFilename("01 Such And Such", "Such & Such", 1);
+	testGetFilename("01 Foo Bar", "Foo,   Bar", 1);
 }
 }
 
