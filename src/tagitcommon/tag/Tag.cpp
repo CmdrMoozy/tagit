@@ -31,6 +31,8 @@
 #include <taglib/tag.h>
 #include <taglib/tstring.h>
 
+#include "tagitcommon/util/String.h"
+
 namespace
 {
 template <typename T>
@@ -144,22 +146,31 @@ Tag::Tag(const TagLib::Tag *tag) : Tag()
 QString Tag::getFilename(bool includeCD) const
 {
 	QString filename;
-	QTextStream stream(&filename);
-	QTextCodec *codec = QTextCodec::codecForName("UTF-16");
-	if(codec == nullptr)
-		throw std::runtime_error("Couldn't get UTF-16 QTextCodec.");
-	stream.setCodec(codec);
 
-	if(includeCD)
 	{
-		writeFixedWidth(stream, cd, 2);
-		stream << '-';
+		QTextStream stream(&filename);
+		QTextCodec *codec = QTextCodec::codecForName("UTF-16");
+		if(codec == nullptr)
+		{
+			throw std::runtime_error(
+			        "Couldn't get UTF-16 QTextCodec.");
+		}
+		stream.setCodec(codec);
+
+		if(includeCD)
+		{
+			writeFixedWidth(stream, cd, 2);
+			stream << '-';
+		}
+
+		writeFixedWidth(stream, track, 2);
+		stream << " ";
+		stream << titleToFilename(title);
 	}
 
-	writeFixedWidth(stream, track, 2);
-	stream << " ";
-	stream << titleToFilename(title);
-
+	tagit::string::visualTranslateToASCII(filename);
+	tagit::string::translateASCIIToFilename(filename);
+	tagit::string::singleSpace(filename);
 	return filename;
 }
 }
