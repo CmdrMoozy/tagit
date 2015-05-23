@@ -27,7 +27,8 @@
 namespace
 {
 void translateString(QString &str,
-                     const std::map<QChar, QString> &translationMap)
+                     const std::map<QChar, QString> &translationMap,
+                     bool allowUnmapped)
 {
 	QString processed;
 	processed.reserve(str.size());
@@ -37,7 +38,7 @@ void translateString(QString &str,
 		auto it = translationMap.find(c);
 		if(it != translationMap.end())
 			processed.append(it->second);
-		else
+		else if(allowUnmapped)
 			processed.append(c);
 	}
 
@@ -51,12 +52,12 @@ namespace string
 {
 void visualTranslateToASCII(QString &str)
 {
-	translateString(str, detail::VISUAL_ASCII_TRANSLATION_MAP);
+	translateString(str, detail::VISUAL_ASCII_TRANSLATION_MAP, true);
 }
 
 void translateASCIIToFilename(QString &str)
 {
-	translateString(str, detail::ASCII_FILENAME_TRANSLATION_MAP);
+	translateString(str, detail::ASCII_FILENAME_TRANSLATION_MAP, false);
 }
 
 void singleSpace(QString &str)
