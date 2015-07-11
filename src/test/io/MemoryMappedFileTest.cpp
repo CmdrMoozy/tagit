@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MemoryMappedFileTest.h"
+#include <catch/catch.hpp>
 
 #include <cstring>
 #include <fstream>
@@ -25,11 +25,7 @@
 #include "tagitcommon/fs/TemporaryStorage.h"
 #include "tagitcommon/io/MemoryMappedFile.h"
 
-namespace tagit_test
-{
-namespace io
-{
-void MemoryMappedFileTest::test()
+TEST_CASE("Test memory mapped I/O functionality", "[io]")
 {
 	tagit::fs::TemporaryStorage temp(tagit::fs::TemporaryStorageType::FILE);
 
@@ -41,23 +37,20 @@ void MemoryMappedFileTest::test()
 		oss.flush();
 		std::string contents = oss.str();
 		std::size_t expected = static_cast<std::size_t>(oss.tellp());
-		vrfy::assert::assertEquals(expected, contents.length());
+		CHECK(expected == contents.length());
 
 		std::ofstream out(temp.getPath(),
 		                  std::ios_base::out | std::ios_base::binary |
 		                          std::ios_base::trunc);
-		vrfy::assert::assertTrue(out.is_open());
+		CHECK(out.is_open());
 		out.write(contents.c_str(),
 		          static_cast<std::streamsize>(contents.length()));
 		out.flush();
 		out.close();
 
 		tagit::io::MemoryMappedFile file(temp.getPath());
-		vrfy::assert::assertEquals(expected, file.getLength());
-		vrfy::assert::assertEquals(0, std::memcmp(contents.c_str(),
-		                                          file.getData(),
-		                                          file.getLength()));
+		CHECK(expected == file.getLength());
+		CHECK(0 == std::memcmp(contents.c_str(), file.getData(),
+		                       file.getLength()));
 	}
-}
-}
 }

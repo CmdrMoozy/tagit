@@ -36,7 +36,7 @@ if(CMAKE_BUILD_TYPE_LOWER MATCHES debug)
 	add_definitions(-DTAGIT_DEBUG)
 endif()
 
-include_directories("src")
+include_directories(3rdparty/include src)
 
 # Define the libraries to link against.
 
@@ -58,12 +58,6 @@ set(tagit_QT5_MODULES
 	Widgets
 
 )
-
-# Build libvrfy, if applicable.
-
-if(CMAKE_BUILD_TYPE_LOWER MATCHES debug)
-	add_subdirectory(vrfy)
-endif()
 
 # Add our targets.
 

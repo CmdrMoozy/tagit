@@ -16,39 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
+#define CATCH_CONFIG_RUNNER
+#include <catch/catch.hpp>
 
 #include <QApplication>
 
-#include <Vrfy/Vrfy.h>
-
-#include "test/audio/AudioFileTest.h"
-#include "test/fs/EnvironmentTest.h"
-#include "test/fs/FSTest.h"
-#include "test/fs/TemporaryStorageTest.h"
-#include "test/io/MemoryMappedFileTest.h"
-#include "test/tag/TagTest.h"
-#include "test/util/BitwiseTest.h"
-#include "test/util/ErrnoTest.h"
-#include "test/util/ScopeExitTest.h"
-#include "test/util/StringTest.h"
-
-int main(int argc, char **argv)
+int main(int argc, char *const argv[])
 {
-	QApplication app(argc, argv, false);
+	int appArgs = 0;
+	QApplication app(appArgs, nullptr, false);
 
-	vrfy::Tests tests;
-	bool success = tests.add<tagit_test::fs::EnvironmentTest>()
-	                       .add<tagit_test::audio::AudioFileTest>()
-	                       .add<tagit_test::fs::FSTest>()
-	                       .add<tagit_test::fs::TemporaryStorageTest>()
-	                       .add<tagit_test::io::MemoryMappedFileTest>()
-	                       .add<tagit_test::tag::TagTest>()
-	                       .add<tagit_test::util::BitwiseTest>()
-	                       .add<tagit_test::util::ErrnoTest>()
-	                       .add<tagit_test::util::ScopeExitTest>()
-	                       .add<tagit_test::util::StringTest>()
-	                       .execute();
-
-	return success ? EXIT_SUCCESS : EXIT_FAILURE;
+	return Catch::Session().run(argc, argv);
 }

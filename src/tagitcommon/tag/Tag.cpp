@@ -36,10 +36,9 @@
 namespace
 {
 template <typename T>
-void
-writeFixedWidth(QTextStream &stream, T value, std::size_t width,
-                QChar pad = '0',
-                QTextStream::FieldAlignment alignment = QTextStream::AlignRight)
+void writeFixedWidth(
+        QTextStream &stream, T value, std::size_t width, QChar pad = '0',
+        QTextStream::FieldAlignment alignment = QTextStream::AlignRight)
 {
 	int oldWidth = stream.fieldWidth();
 	QChar oldPad = stream.padChar();

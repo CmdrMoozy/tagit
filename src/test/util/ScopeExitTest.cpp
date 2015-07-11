@@ -16,15 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ScopeExitTest.h"
+#include <catch/catch.hpp>
 
 #include "tagitcommon/util/ScopeExit.h"
 
-namespace tagit_test
-{
-namespace util
-{
-void ScopeExitTest::test()
+TEST_CASE("Test ScopeExit semantics", "[util]")
 {
 	bool executed = false;
 	auto fn = [&executed]()
@@ -36,7 +32,5 @@ void ScopeExitTest::test()
 		tagit::util::ScopeExit scopExit(fn);
 	}
 
-	vrfy::assert::assertTrue(executed);
-}
-}
+	CHECK(executed);
 }

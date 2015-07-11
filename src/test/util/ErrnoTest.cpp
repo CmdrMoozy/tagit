@@ -16,44 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ErrnoTest.h"
+#include <catch/catch.hpp>
 
 #include <cerrno>
 #include <functional>
 
 #include "tagitcommon/util/Errno.h"
 
-namespace
+TEST_CASE("Test errno string retrieval", "[util]")
 {
-void testGetErrnoError()
-{
-	vrfy::assert::assertTrue(tagit::util::getErrnoError(EINVAL).length() >
-	                         0);
-	vrfy::assert::assertTrue(tagit::util::getErrnoError(EBADF).length() >
-	                         0);
+	CHECK(tagit::util::getErrnoError(EINVAL).length() > 0);
+	CHECK(tagit::util::getErrnoError(EBADF).length() > 0);
 }
 
-void testThrowErrnoError()
+TEST_CASE("Test errno error throwing", "[util]")
 {
-	vrfy::assert::assertThrows([]()
-	                           {
-		                           tagit::util::throwErrnoError(EINVAL);
-		                   });
-	vrfy::assert::assertThrows([]()
-	                           {
-		                           tagit::util::throwErrnoError(EBADF);
-		                   });
-}
-}
-
-namespace tagit_test
-{
-namespace util
-{
-void ErrnoTest::test()
-{
-	testGetErrnoError();
-	testThrowErrnoError();
-}
-}
+	CHECK_THROWS(tagit::util::throwErrnoError(EINVAL));
+	CHECK_THROWS(tagit::util::throwErrnoError(EBADF));
 }

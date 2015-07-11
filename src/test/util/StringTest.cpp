@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "StringTest.h"
+#include <catch/catch.hpp>
 
 #include <QString>
 
@@ -28,10 +28,32 @@ void testVisualTranslateToASCII(const char *exp, const char *in)
 {
 	QString out(in);
 	tagit::string::visualTranslateToASCII(out);
-	vrfy::assert::assertEquals<QString>(exp, out);
+	CHECK(QString(exp) == out);
 }
 
-void testVisualTranslateToASCII()
+void testTranslateASCIIToFilename(const char *exp, const char *in)
+{
+	QString out(in);
+	tagit::string::translateASCIIToFilename(out);
+	CHECK(QString(exp) == out);
+}
+
+void testSingleSpaced(const char *exp, const char *in)
+{
+	QString out(in);
+	tagit::string::singleSpace(out);
+	CHECK(QString(exp) == out);
+}
+
+void testTrim(const char *exp, const char *in)
+{
+	QString out(in);
+	tagit::string::trim(out);
+	CHECK(QString(exp) == out);
+}
+}
+
+TEST_CASE("Test visual ASCII translation", "[util]")
 {
 	testVisualTranslateToASCII(
 	        " !\"#$%&'()*+,-./"
@@ -56,14 +78,7 @@ void testVisualTranslateToASCII()
 	        "ṖṗṠṡṪṫẀẁẂẃẄẅỲỳ");
 }
 
-void testTranslateASCIIToFilename(const char *exp, const char *in)
-{
-	QString out(in);
-	tagit::string::translateASCIIToFilename(out);
-	vrfy::assert::assertEquals<QString>(exp, out);
-}
-
-void testTranslateASCIIToFilename()
+TEST_CASE("Test ASCII to filename translation", "[util]")
 {
 	testTranslateASCIIToFilename(
 	        " S And '() And  - 0123456789 - AtABCDEFGHIJKLMNOPQRSTUVWXYZ() "
@@ -72,14 +87,7 @@ void testTranslateASCIIToFilename()
 	        "abcdefghijklmnopqrstuvwxyz{}");
 }
 
-void testSingleSpaced(const char *exp, const char *in)
-{
-	QString out(in);
-	tagit::string::singleSpace(out);
-	vrfy::assert::assertEquals<QString>(exp, out);
-}
-
-void testSingleSpaced()
+TEST_CASE("Test single spacing algorithm", "[util]")
 {
 	testSingleSpaced("Я знаю, что вы ждали всю свою жизнь, и, наконец, "
 	                 "ты здесь со мной сегодня вечером.",
@@ -87,30 +95,8 @@ void testSingleSpaced()
 	                 "наконец, ты\t \tздесь со \t мной сегодня вечером.");
 }
 
-void testTrim(const char *exp, const char *in)
-{
-	QString out(in);
-	tagit::string::trim(out);
-	vrfy::assert::assertEquals<QString>(exp, out);
-}
-
-void testTrim()
+TEST_CASE("Test trim algorithm", "[util]")
 {
 	testTrim("foo  \t  bar \n baz",
 	         "\t\n\r \t\t foo  \t  bar \n baz\n\t     ");
-}
-}
-
-namespace tagit_test
-{
-namespace util
-{
-void StringTest::test()
-{
-	testSingleSpaced();
-	testVisualTranslateToASCII();
-	testTranslateASCIIToFilename();
-	testTrim();
-}
-}
 }

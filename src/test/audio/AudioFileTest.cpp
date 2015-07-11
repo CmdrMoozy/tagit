@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "AudioFileTest.h"
+#include <catch/catch.hpp>
 
 #include <fstream>
 
@@ -42,12 +42,12 @@ template <typename FileType> void testAudioFile(const std::string &name)
 	QString path(":/data/");
 	path.append(QString::fromStdString(name));
 	QFile file(path);
-	vrfy::assert::assertTrue(file.open(QIODevice::ReadOnly));
+	CHECK(file.open(QIODevice::ReadOnly));
 	{
 		QByteArray contents = file.readAll();
 		std::ofstream out(temp.getPath(),
 		                  std::ios_base::out | std::ios_base::binary);
-		vrfy::assert::assertTrue(out.is_open());
+		CHECK(out.is_open());
 		out.write(contents.constData(), contents.length());
 		out.flush();
 		out.close();
@@ -55,15 +55,11 @@ template <typename FileType> void testAudioFile(const std::string &name)
 
 	// Construct an AudioFile from the temp file, and verify its type.
 	tagit::audio::AudioFile audioFile(temp.getPath());
-	vrfy::assert::assertTrue(audioFile.is<FileType>());
+	CHECK(audioFile.is<FileType>());
 }
 }
 
-namespace tagit_test
-{
-namespace audio
-{
-void AudioFileTest::test()
+TEST_CASE("Test audio file type detection", "[audio]")
 {
 	testAudioFile<tagit::audio::AACFile>("aac.m4a");
 	testAudioFile<tagit::audio::AACFile>("aac-tagged.m4a");
@@ -78,6 +74,4 @@ void AudioFileTest::test()
 	testAudioFile<tagit::audio::VorbisFile>("vorbis.ogg");
 	testAudioFile<tagit::audio::VorbisFile>("vorbis-tagged.ogg");
 	testAudioFile<tagit::audio::WaveFile>("wav.wav");
-}
-}
 }

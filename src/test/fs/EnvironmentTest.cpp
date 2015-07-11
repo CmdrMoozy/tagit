@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "EnvironmentTest.h"
+#include <catch/catch.hpp>
 
 #include <cstdlib>
 #include <sstream>
@@ -32,9 +32,7 @@
 #include "tagitcommon/fs/TemporaryStorage.h"
 #include "tagitcommon/util/ScopeExit.h"
 
-namespace
-{
-void testGetSystemPath()
+TEST_CASE("Test PATH environment variable retrieval", "[fs]")
 {
 	const std::string EXPECTED_PATH =
 	        "/usr/local/bin:/usr/bin:/bin:"
@@ -49,19 +47,17 @@ void testGetSystemPath()
 	         "/opt/android-sdk-update-manager/platform-tools"});
 
 	int ret = setenv("PATH", EXPECTED_PATH.c_str(), 1);
-	vrfy::assert::assertEquals(true, ret == 0);
+	CHECK(ret == 0);
 
 	std::vector<std::string> components = tagit::fs::getSystemPath();
-	vrfy::assert::assertEquals(EXPECTED_COMPONENTS.size(),
-	                           components.size());
+	CHECK(EXPECTED_COMPONENTS.size() == components.size());
 	for(std::size_t i = 0; i < components.size(); ++i)
 	{
-		vrfy::assert::assertEquals(components[i],
-		                           EXPECTED_COMPONENTS[i]);
+		CHECK(components[i] == EXPECTED_COMPONENTS[i]);
 	}
 }
 
-void testWhich()
+TEST_CASE("Test 'which' algorithm", "[fs]")
 {
 	tagit::fs::TemporaryStorage temp(
 	        tagit::fs::TemporaryStorageType::DIRECTORY);
@@ -76,14 +72,14 @@ void testWhich()
 	        [oldPath]()
 	        {
 		        int ret = setenv("PATH", oldPath.c_str(), 1);
-		        vrfy::assert::assertEquals(0, ret);
+		        CHECK(0 == ret);
 		});
 
 	{
 		std::ostringstream oss;
 		oss << a.string() << ":" << b.string();
 		int ret = setenv("PATH", oss.str().c_str(), 1);
-		vrfy::assert::assertEquals(0, ret);
+		CHECK(0 == ret);
 	}
 
 	boost::filesystem::path aDir = a / "foo";
@@ -92,10 +88,10 @@ void testWhich()
 	tagit::fs::createFile(bExe1.string());
 	int ret = chmod(bExe1.string().c_str(),
 	                tagit::fs::getMode(bExe1.string()) | S_IXUSR);
-	vrfy::assert::assertEquals(0, ret);
+	CHECK(0 == ret);
 	auto which = tagit::fs::which("foo");
-	vrfy::assert::assertTrue(!!which);
-	vrfy::assert::assertEquals(bExe1.string(), *which);
+	REQUIRE(!!which);
+	CHECK(bExe1.string() == *which);
 
 	boost::filesystem::path aNonExe = a / "bar";
 	tagit::fs::createFile(aNonExe.string());
@@ -103,21 +99,8 @@ void testWhich()
 	tagit::fs::createFile(bExe2.string());
 	ret = chmod(bExe2.string().c_str(),
 	            tagit::fs::getMode(bExe2.string()) | S_IXUSR);
-	vrfy::assert::assertEquals(0, ret);
+	CHECK(0 == ret);
 	which = tagit::fs::which("bar");
-	vrfy::assert::assertTrue(!!which);
-	vrfy::assert::assertEquals(bExe2.string(), *which);
-}
-}
-
-namespace tagit_test
-{
-namespace fs
-{
-void EnvironmentTest::test()
-{
-	testGetSystemPath();
-	testWhich();
-}
-}
+	REQUIRE(!!which);
+	CHECK(bExe2.string() == *which);
 }

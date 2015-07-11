@@ -30,7 +30,7 @@ class ConstexprString
 {
 public:
 	template <std::size_t N>
-	constexpr ConstexprString(const char (&s)[N])
+	constexpr ConstexprString(const char(&s)[N])
 	        : string(s), sz(N - 1)
 	{
 		static_assert(N >= 1,

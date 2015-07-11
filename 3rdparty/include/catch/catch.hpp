@@ -16,24 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEST_TAG_TAG_TEST_H
-#define TEST_TAG_TAG_TEST_H
-
-#include <Vrfy/Vrfy.h>
-
-namespace tagit_test
-{
-namespace tag
-{
-class TagTest : public vrfy::Test
-{
-public:
-	TagTest() = default;
-	virtual ~TagTest() = default;
-
-	virtual void test() override;
-};
-}
-}
-
-#endif
+#include "../../catch/single_include/catch.hpp"

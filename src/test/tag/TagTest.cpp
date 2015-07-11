@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "TagTest.h"
+#include <catch/catch.hpp>
 
 #include <string>
 
@@ -43,15 +43,10 @@ void testStringConversion(const std::string &str)
 	TagLib::String roundedTagString =
 	        tagit::tag::util::qstringToTagString(convertedTagString);
 
-	vrfy::assert::assertEquals(originalQString, convertedTagString);
-	vrfy::assert::assertEquals(convertedTagString, roundedQString);
-	vrfy::assert::assertEquals(originalTagString, convertedQString);
-	vrfy::assert::assertEquals(convertedQString, roundedTagString);
-}
-
-void testStringConversion()
-{
-	testStringConversion("Test String");
+	CHECK(originalQString == convertedTagString);
+	CHECK(convertedTagString == roundedQString);
+	CHECK(originalTagString == convertedQString);
+	CHECK(convertedQString == roundedTagString);
 }
 
 void testGetFilename(const char *exp, const char *title, uint64_t track,
@@ -62,24 +57,17 @@ void testGetFilename(const char *exp, const char *title, uint64_t track,
 	tag.cd = cd;
 	tag.track = track;
 
-	vrfy::assert::assertEquals<QString>(exp, tag.getFilename(cds > 1));
+	CHECK(QString(exp) == tag.getFilename(cds > 1));
+}
 }
 
-void testGetFilename()
+TEST_CASE("Test string encoding conversion", "[tag]")
+{
+	testStringConversion("Test String");
+}
+
+TEST_CASE("Test tag filename retrieval", "[tag]")
 {
 	testGetFilename("01 Such And Such", "Such & Such", 1);
 	testGetFilename("01 Foo Bar", "Foo,   Bar", 1);
-}
-}
-
-namespace tagit_test
-{
-namespace tag
-{
-void TagTest::test()
-{
-	testStringConversion();
-	testGetFilename();
-}
-}
 }

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "TemporaryStorageTest.h"
+#include <catch/catch.hpp>
 
 #include <string>
 
@@ -24,9 +24,7 @@
 
 #include "tagitcommon/fs/TemporaryStorage.h"
 
-namespace
-{
-void testTemporaryFile()
+TEST_CASE("Test temporary file functionality", "[fs]")
 {
 	boost::filesystem::path path;
 
@@ -34,15 +32,14 @@ void testTemporaryFile()
 		tagit::fs::TemporaryStorage temp(
 		        tagit::fs::TemporaryStorageType::FILE);
 		path = temp.getPath();
-		vrfy::assert::assertTrue(boost::filesystem::exists(path));
-		vrfy::assert::assertTrue(
-		        boost::filesystem::is_regular_file(path));
+		CHECK(boost::filesystem::exists(path));
+		CHECK(boost::filesystem::is_regular_file(path));
 	}
 
-	vrfy::assert::assertFalse(boost::filesystem::exists(path));
+	CHECK(!boost::filesystem::exists(path));
 }
 
-void testTemporaryDirectory()
+TEST_CASE("Test temporary directory functionality", "[fs]")
 {
 	boost::filesystem::path path;
 
@@ -50,22 +47,9 @@ void testTemporaryDirectory()
 		tagit::fs::TemporaryStorage temp(
 		        tagit::fs::TemporaryStorageType::DIRECTORY);
 		path = temp.getPath();
-		vrfy::assert::assertTrue(boost::filesystem::exists(path));
-		vrfy::assert::assertTrue(boost::filesystem::is_directory(path));
+		CHECK(boost::filesystem::exists(path));
+		CHECK(boost::filesystem::is_directory(path));
 	}
 
-	vrfy::assert::assertFalse(boost::filesystem::exists(path));
-}
-}
-
-namespace tagit_test
-{
-namespace fs
-{
-void TemporaryStorageTest::test()
-{
-	testTemporaryFile();
-	testTemporaryDirectory();
-}
-}
+	CHECK(!boost::filesystem::exists(path));
 }

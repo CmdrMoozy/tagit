@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "BitwiseTest.h"
+#include <catch/catch.hpp>
 
 #include "tagitcommon/util/Bitwise.h"
 
@@ -24,23 +24,12 @@ namespace
 {
 void testSwitchEndianness(uint32_t exp, uint32_t v)
 {
-	vrfy::assert::assertEquals(exp, tagit::bitwise::switchEndianness(v));
+	CHECK(exp == tagit::bitwise::switchEndianness(v));
+}
 }
 
-void testSwitchEndianness()
+TEST_CASE("Test endianness switching functionality", "[util]")
 {
 	testSwitchEndianness(0x0A0B0C0D, 0x0D0C0B0A);
 	testSwitchEndianness(0x0D0C0B0A, 0x0A0B0C0D);
-}
-}
-
-namespace tagit_test
-{
-namespace util
-{
-void BitwiseTest::test()
-{
-	testSwitchEndianness();
-}
-}
 }

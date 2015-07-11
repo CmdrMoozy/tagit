@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "FSTest.h"
+#include <catch/catch.hpp>
 
 #include <fstream>
 #include <functional>
@@ -31,9 +31,7 @@
 #include "tagitcommon/fs/FS.h"
 #include "tagitcommon/fs/TemporaryStorage.h"
 
-namespace
-{
-void testStripSymlink()
+TEST_CASE("Test symlink stripping", "[fs]")
 {
 	tagit::fs::TemporaryStorage temp(
 	        tagit::fs::TemporaryStorageType::DIRECTORY);
@@ -45,28 +43,24 @@ void testStripSymlink()
 	tagit::fs::createSymlink(filePath.string(), symlinkPath.string());
 
 	std::string resolved = tagit::fs::stripSymlink(symlinkPath.string());
-	vrfy::assert::assertEquals(symlinkPath.string(), resolved);
+	CHECK(symlinkPath.string() == resolved);
 }
 
-void testCreateFile()
+TEST_CASE("Test file creation", "[fs]")
 {
 	tagit::fs::TemporaryStorage temp(tagit::fs::TemporaryStorageType::FILE);
-	vrfy::assert::assertTrue(boost::filesystem::exists(
+	CHECK(boost::filesystem::exists(
 	        boost::filesystem::path(temp.getPath())));
-	vrfy::assert::assertNoThrow(
-	        [&temp]()
-	        {
-		        boost::filesystem::remove(
-		                boost::filesystem::path(temp.getPath()));
-		});
+	CHECK_NOTHROW(boost::filesystem::remove(
+	        boost::filesystem::path(temp.getPath())));
 	tagit::fs::createFile(temp.getPath());
-	vrfy::assert::assertTrue(boost::filesystem::exists(
+	CHECK(boost::filesystem::exists(
 	        boost::filesystem::path(temp.getPath())));
-	vrfy::assert::assertTrue(boost::filesystem::is_regular_file(
+	CHECK(boost::filesystem::is_regular_file(
 	        boost::filesystem::path(temp.getPath())));
 }
 
-void testCreateSymlink()
+TEST_CASE("Test symlink creation", "[fs]")
 {
 	tagit::fs::TemporaryStorage temp(
 	        tagit::fs::TemporaryStorageType::DIRECTORY);
@@ -77,13 +71,13 @@ void testCreateSymlink()
 	tagit::fs::createFile(filePath.string());
 	tagit::fs::createSymlink(filePath.string(), symlinkPath.string());
 
-	vrfy::assert::assertTrue(boost::filesystem::exists(filePath));
-	vrfy::assert::assertTrue(boost::filesystem::is_regular_file(filePath));
-	vrfy::assert::assertTrue(boost::filesystem::exists(symlinkPath));
-	vrfy::assert::assertTrue(boost::filesystem::is_symlink(symlinkPath));
+	CHECK(boost::filesystem::exists(filePath));
+	CHECK(boost::filesystem::is_regular_file(filePath));
+	CHECK(boost::filesystem::exists(symlinkPath));
+	CHECK(boost::filesystem::is_symlink(symlinkPath));
 }
 
-void testGetSize()
+TEST_CASE("Test file size retrieval", "[fs]")
 {
 	tagit::fs::TemporaryStorage temp(tagit::fs::TemporaryStorageType::FILE);
 
@@ -95,31 +89,29 @@ void testGetSize()
 		oss.flush();
 		std::string contents = oss.str();
 		std::size_t expected = static_cast<std::size_t>(oss.tellp());
-		vrfy::assert::assertEquals(expected, contents.length());
+		CHECK(expected == contents.length());
 
 		std::ofstream out(temp.getPath(),
 		                  std::ios_base::out | std::ios_base::binary |
 		                          std::ios_base::trunc);
-		vrfy::assert::assertTrue(out.is_open());
+		CHECK(out.is_open());
 		out.write(contents.c_str(),
 		          static_cast<std::streamsize>(contents.length()));
 		out.flush();
 		out.close();
 
-		vrfy::assert::assertEquals(expected,
-		                           tagit::fs::getSize(temp.getPath()));
+		CHECK(expected == tagit::fs::getSize(temp.getPath()));
 	}
 }
 
-void testGetMode()
+TEST_CASE("Test file permissions retrieval", "[fs]")
 {
 	auto test = [](const tagit::fs::TemporaryStorage &temp, uintmax_t mode)
 	{
 		int ret = chmod(temp.getPath().c_str(),
 		                static_cast<mode_t>(mode));
-		vrfy::assert::assertEquals(0, ret);
-		vrfy::assert::assertEquals(mode,
-		                           tagit::fs::getMode(temp.getPath()));
+		CHECK(0 == ret);
+		CHECK(mode == tagit::fs::getMode(temp.getPath()));
 	};
 
 	std::string path;
@@ -135,58 +127,39 @@ void testGetMode()
 		test(temp, S_IRUSR);
 	}
 
-	vrfy::assert::assertFalse(
-	        boost::filesystem::exists(boost::filesystem::path(path)));
+	CHECK(!boost::filesystem::exists(boost::filesystem::path(path)));
 }
 
-void testIsFile()
+TEST_CASE("Test file detection functionality", "[fs]")
 {
 	{
 		tagit::fs::TemporaryStorage temp(
 		        tagit::fs::TemporaryStorageType::FILE);
-		vrfy::assert::assertTrue(tagit::fs::isFile(temp.getPath()));
+		CHECK(tagit::fs::isFile(temp.getPath()));
 	}
 
 	{
 		tagit::fs::TemporaryStorage temp(
 		        tagit::fs::TemporaryStorageType::DIRECTORY);
-		vrfy::assert::assertFalse(tagit::fs::isFile(temp.getPath()));
+		CHECK(!tagit::fs::isFile(temp.getPath()));
 	}
 }
 
-void testIsExecutable()
+TEST_CASE("Test executable detection functionality", "[fs]")
 {
 	tagit::fs::TemporaryStorage temp(tagit::fs::TemporaryStorageType::FILE);
 
-	vrfy::assert::assertTrue(boost::filesystem::exists(
+	CHECK(boost::filesystem::exists(
 	        boost::filesystem::path(temp.getPath())));
-	vrfy::assert::assertFalse(tagit::fs::isExecutable(temp.getPath()));
+	CHECK(!tagit::fs::isExecutable(temp.getPath()));
 
 	struct stat stats;
 	int ret = stat(temp.getPath().c_str(), &stats);
-	vrfy::assert::assertEquals(0, ret);
+	CHECK(0 == ret);
 
 	ret = chmod(temp.getPath().c_str(),
 	            tagit::fs::getMode(temp.getPath()) | S_IXUSR);
-	vrfy::assert::assertEquals(0, ret);
+	CHECK(0 == ret);
 
-	vrfy::assert::assertTrue(tagit::fs::isExecutable(temp.getPath()));
-}
-}
-
-namespace tagit_test
-{
-namespace fs
-{
-void FSTest::test()
-{
-	testStripSymlink();
-	testCreateFile();
-	testCreateSymlink();
-	testGetSize();
-	testGetMode();
-	testIsFile();
-	testIsExecutable();
-}
-}
+	CHECK(tagit::fs::isExecutable(temp.getPath()));
 }
