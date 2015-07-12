@@ -25,6 +25,7 @@ namespace string
 namespace detail
 {
 const std::map<QChar, QString> ASCII_FILENAME_TRANSLATION_MAP = {{' ', " "},
+                                                                 {'\t', " "},
                                                                  {'$', "S"},
                                                                  {'&', " And "},
                                                                  {'\'', "'"},
