@@ -70,4 +70,5 @@ TEST_CASE("Test tag filename retrieval", "[tag]")
 {
 	testGetFilename("01 Such And Such", "Such & Such", 1);
 	testGetFilename("01 Foo Bar", "Foo,   Bar", 1);
+	testGetFilename("01 Test Title", "\tTest\tTitle\t", 1);
 }

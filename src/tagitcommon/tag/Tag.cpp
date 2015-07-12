@@ -170,6 +170,7 @@ QString Tag::getFilename(bool includeCD) const
 	tagit::string::visualTranslateToASCII(filename);
 	tagit::string::translateASCIIToFilename(filename);
 	tagit::string::singleSpace(filename);
+	tagit::string::trim(filename);
 	return filename;
 }
 }
