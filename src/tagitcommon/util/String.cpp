@@ -18,6 +18,7 @@
 
 #include "String.h"
 
+#include <algorithm>
 #include <iterator>
 #include <utility>
 
@@ -85,23 +86,31 @@ void singleSpace(QString &str)
 
 void trim(QString &str)
 {
-	for(int i = 0; i < str.length(); ++i)
+	const QChar *it = nullptr;
+	for(const QChar *i = str.data(); i != str.data() + str.length(); ++i)
 	{
-		if(!str[i].isSpace())
+		if(!i->isSpace())
 		{
-			str.remove(0, i);
+			it = i;
 			break;
 		}
 	}
 
-	for(int i = (str.length() - 1); i >= 0; --i)
+	const QChar *revit = nullptr;
+	for(const QChar *i = str.data() + (str.length() - 1); i >= str.data();
+	    --i)
 	{
-		if(!str[i].isSpace())
+		if(!i->isSpace())
 		{
-			str.chop(str.length() - 1 - i);
+			revit = i;
 			break;
 		}
 	}
+
+	if((it == nullptr) || (revit == nullptr))
+		return;
+
+	str = QString(it, revit - it + 1);
 }
 }
 }

@@ -93,10 +93,13 @@ TEST_CASE("Test single spacing algorithm", "[util]")
 	                 "ты здесь со мной сегодня вечером.",
 	                 "Я знаю,     что вы ждали всю свою жизнь,\t\tи, "
 	                 "наконец, ты\t \tздесь со \t мной сегодня вечером.");
+	testSingleSpaced("Test String", "Test\tString");
 }
 
 TEST_CASE("Test trim algorithm", "[util]")
 {
 	testTrim("foo  \t  bar \n baz",
 	         "\t\n\r \t\t foo  \t  bar \n baz\n\t     ");
+	testTrim("foobar", "foobar ");
+	testTrim("foo bar baz", "foo bar baz ");
 }
