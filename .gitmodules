@@ -1,3 +1,6 @@
 [submodule "3rdparty/catch"]
 	path = 3rdparty/catch
 	url = https://github.com/philsquared/Catch.git
+[submodule "3rdparty/mapbox_variant"]
+	path = 3rdparty/mapbox_variant
+	url = https://github.com/mapbox/variant.git
