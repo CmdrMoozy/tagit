@@ -21,8 +21,7 @@
 
 #include <memory>
 #include <string>
-
-#include <boost/optional/optional.hpp>
+#include <experimental/optional>
 
 #include <taglib/fileref.h>
 
@@ -41,13 +40,13 @@ class ALACFile
 public:
 	/*!
 	 * Try to construct a new ALACFile object from the given raw data
-	 * file. If the given file is not a valid ALAC file, then boost::none
+	 * file. If the given file is not a valid ALAC file, then nullopt
 	 * is returned instead.
 	 *
 	 * \param memoryFile The file to construct an ALACFile from.
 	 * \return The resulting ALACFile.
 	 */
-	static boost::optional<ALACFile>
+	static std::experimental::optional<ALACFile>
 	factory(const io::MemoryMappedFile &memoryFile);
 
 private:

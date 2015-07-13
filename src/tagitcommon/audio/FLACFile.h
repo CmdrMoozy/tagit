@@ -21,8 +21,7 @@
 
 #include <memory>
 #include <string>
-
-#include <boost/optional/optional.hpp>
+#include <experimental/optional>
 
 #include <taglib/fileref.h>
 
@@ -41,13 +40,13 @@ class FLACFile
 public:
 	/*!
 	 * Try to construct a new FLACFile object from the given raw data
-	 * file. If the given file is not a valid FLAC file, then boost::none
+	 * file. If the given file is not a valid FLAC file, then nullopt
 	 * is returned instead.
 	 *
 	 * \param memoryFile The file to construct an FLACFile from.
 	 * \return The resulting FLACFile.
 	 */
-	static boost::optional<FLACFile>
+	static std::experimental::optional<FLACFile>
 	factory(const io::MemoryMappedFile &memoryFile);
 
 private:

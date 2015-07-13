@@ -21,10 +21,10 @@
 
 #include <memory>
 #include <string>
+#include <experimental/optional>
 
 #include <boost/variant.hpp>
 #include <boost/mpl/vector.hpp>
-#include <boost/optional/optional.hpp>
 
 #include <taglib/fileref.h>
 
@@ -48,7 +48,7 @@ typedef boost::mpl::vector<tagit::audio::AACFile, tagit::audio::ALACFile,
                            tagit::audio::VorbisFile,
                            tagit::audio::WaveFile> Sequence_t;
 typedef boost::make_variant_over<Sequence_t>::type Variant_t;
-typedef boost::optional<Variant_t> OptVariant_t;
+typedef std::experimental::optional<Variant_t> OptVariant_t;
 
 void audioFileFactory(OptVariant_t &file, const std::string &path);
 

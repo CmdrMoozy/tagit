@@ -21,8 +21,7 @@
 
 #include <string>
 #include <vector>
-
-#include <boost/optional/optional.hpp>
+#include <experimental/optional>
 
 namespace tagit
 {
@@ -41,9 +40,9 @@ std::vector<std::string> getSystemPath();
  * returns the path to a given executable in the environment's PATH.
  *
  * \param command The command to search for.
- * \return The path to the given command, or boost::none if not found.
+ * \return The path to the given command, or nullopt if not found.
  */
-boost::optional<std::string> which(const std::string &command);
+std::experimental::optional<std::string> which(const std::string &command);
 }
 }
 

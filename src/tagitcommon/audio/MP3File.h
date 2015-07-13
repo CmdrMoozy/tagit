@@ -21,8 +21,7 @@
 
 #include <memory>
 #include <string>
-
-#include <boost/optional/optional.hpp>
+#include <experimental/optional>
 
 #include <taglib/fileref.h>
 
@@ -41,13 +40,13 @@ class MP3File
 public:
 	/*!
 	 * Try to construct a new MP3File object from the given raw data
-	 * file. If the given file is not a valid MP3 file, then boost::none
+	 * file. If the given file is not a valid MP3 file, then nullopt
 	 * is returned instead.
 	 *
 	 * \param memoryFile The file to construct an MP3File from.
 	 * \return The resulting MP3File.
 	 */
-	static boost::optional<MP3File>
+	static std::experimental::optional<MP3File>
 	factory(const io::MemoryMappedFile &memoryFile);
 
 private:

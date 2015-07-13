@@ -21,8 +21,7 @@
 
 #include <memory>
 #include <string>
-
-#include <boost/optional/optional.hpp>
+#include <experimental/optional>
 
 #include <taglib/fileref.h>
 
@@ -41,13 +40,13 @@ class AACFile
 public:
 	/*!
 	 * Try to construct a new AACFile object from the given raw data
-	 * file. If the given file is not a valid AAC file, then boost::none
+	 * file. If the given file is not a valid AAC file, then nullopt
 	 * is returned instead.
 	 *
 	 * \param memoryFile The file to construct an AACFile from.
 	 * \return The resulting AACFile.
 	 */
-	static boost::optional<AACFile>
+	static std::experimental::optional<AACFile>
 	factory(const io::MemoryMappedFile &memoryFile);
 
 private:

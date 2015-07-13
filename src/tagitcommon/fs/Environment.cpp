@@ -37,14 +37,14 @@ std::vector<std::string> getSystemPath()
 	return components;
 }
 
-boost::optional<std::string> which(const std::string &command)
+std::experimental::optional<std::string> which(const std::string &command)
 {
 	if(command.find('/') != std::string::npos)
 	{
 		if(isFile(command) && isExecutable(command))
 			return command;
 
-		return boost::none;
+		return std::experimental::nullopt;
 	}
 
 	std::vector<std::string> components = getSystemPath();
@@ -58,7 +58,7 @@ boost::optional<std::string> which(const std::string &command)
 			return path;
 	}
 
-	return boost::none;
+	return std::experimental::nullopt;
 }
 }
 }

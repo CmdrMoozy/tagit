@@ -31,16 +31,16 @@ namespace tagit
 {
 namespace audio
 {
-boost::optional<FLACFile>
+std::experimental::optional<FLACFile>
 FLACFile::factory(const io::MemoryMappedFile &memoryFile)
 {
 	// The file must be long enough to contain the FLAC magic number.
 	if(memoryFile.getLength() < 4)
-		return boost::none;
+		return std::experimental::nullopt;
 
 	// If the FLAC magic number isn't present, this isn't a FLAC file.
 	if(memcmp(memoryFile.getData(), "fLaC", 4) != 0)
-		return boost::none;
+		return std::experimental::nullopt;
 
 	return FLACFile();
 }

@@ -51,10 +51,11 @@ struct CallFactoryFunction
 	static tagit::audio::detail::OptVariant_t
 	call(const tagit::io::MemoryMappedFile &memoryFile)
 	{
-		tagit::audio::detail::OptVariant_t variant = boost::none;
-		boost::optional<T> opt = T::factory(memoryFile);
+		tagit::audio::detail::OptVariant_t variant =
+		        std::experimental::nullopt;
+		std::experimental::optional<T> opt = T::factory(memoryFile);
 		if(!!opt)
-			variant = std::move(*opt);
+			variant.emplace(std::move(*opt));
 		return variant;
 	}
 };
@@ -117,12 +118,13 @@ GetTagVisitor::GetTagVisitor(const TagLib::File *f) : tagLibFile(f)
 }
 }
 
-AudioFile::AudioFile() : path(), file(boost::none), tagLibFile(nullptr)
+AudioFile::AudioFile()
+        : path(), file(std::experimental::nullopt), tagLibFile(nullptr)
 {
 }
 
 AudioFile::AudioFile(const std::string &p)
-        : path(), file(boost::none), tagLibFile(nullptr)
+        : path(), file(std::experimental::nullopt), tagLibFile(nullptr)
 {
 	boost::filesystem::path pathObj(p);
 	if(!boost::filesystem::exists(pathObj))

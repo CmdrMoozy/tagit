@@ -21,8 +21,7 @@
 
 #include <memory>
 #include <string>
-
-#include <boost/optional/optional.hpp>
+#include <experimental/optional>
 
 #include <taglib/fileref.h>
 
@@ -42,12 +41,12 @@ public:
 	/*!
 	 * Try to construct a new VorbisFile object from the given raw data
 	 * file. If the given file is not a valid Ogg/Vorbis file, then
-	 * boost::none is returned instead.
+	 * nullopt is returned instead.
 	 *
 	 * \param memoryFile The file to construct an VorbisFile from.
 	 * \return The resulting VorbisFile.
 	 */
-	static boost::optional<VorbisFile>
+	static std::experimental::optional<VorbisFile>
 	factory(const io::MemoryMappedFile &memoryFile);
 
 private:

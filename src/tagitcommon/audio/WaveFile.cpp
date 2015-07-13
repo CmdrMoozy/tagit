@@ -29,20 +29,20 @@ namespace tagit
 {
 namespace audio
 {
-boost::optional<WaveFile>
+std::experimental::optional<WaveFile>
 WaveFile::factory(const io::MemoryMappedFile &memoryFile)
 {
 	// The file should start with a RIFF header and a length. After that,
 	// a "WAVE" chunk should be present.
 
 	if(memoryFile.getLength() < 12)
-		return boost::none;
+		return std::experimental::nullopt;
 
 	if(std::memcmp(memoryFile.getData(), "RIFF", 4) != 0)
-		return boost::none;
+		return std::experimental::nullopt;
 
 	if(std::memcmp(memoryFile.getData() + 8, "WAVE", 4) != 0)
-		return boost::none;
+		return std::experimental::nullopt;
 
 	return WaveFile();
 }

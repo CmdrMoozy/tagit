@@ -27,17 +27,17 @@ namespace tagit
 {
 namespace audio
 {
-boost::optional<AACFile>
+std::experimental::optional<AACFile>
 AACFile::factory(const io::MemoryMappedFile &memoryFile)
 {
 	// If the given file isn't an MP4 file, it can't be an AAC file.
 	if(!utils::isMP4AudioFile(memoryFile))
-		return boost::none;
+		return std::experimental::nullopt;
 
 	// Use TagLib to differentiate AAC versus ALAC.
 	tagit::tag::TaggedFile<TagLib::MP4::File> tag(memoryFile);
 	if(tag.get().audioProperties()->codec() != TagLib::MP4::Properties::AAC)
-		return boost::none;
+		return std::experimental::nullopt;
 
 	return AACFile();
 }

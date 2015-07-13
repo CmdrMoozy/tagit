@@ -20,8 +20,7 @@
 #define TAGITCOMMON_UTIL_ERRNO_H
 
 #include <string>
-
-#include <boost/optional/optional.hpp>
+#include <experimental/optional>
 
 namespace tagit
 {
@@ -34,8 +33,9 @@ namespace util
  * \param defaultMessage The default error message to return.
  * \return A human readable error message for the given error.
  */
-std::string getErrnoError(boost::optional<int> error = boost::none,
-                          const std::string &defaultMessage = "Unknown error.");
+std::string getErrnoError(
+        std::experimental::optional<int> error = std::experimental::nullopt,
+        const std::string &defaultMessage = "Unknown error.");
 
 /*!
  * Throw an exception with the getErrnoError() message for the given error.
@@ -43,8 +43,9 @@ std::string getErrnoError(boost::optional<int> error = boost::none,
  * \param error The error number to interpret. Defaults to errno.
  * \param defaultMessage The default error message to return.
  */
-void throwErrnoError(boost::optional<int> error = boost::none,
-                     const std::string &defaultMessage = "Unknown error.");
+void throwErrnoError(
+        std::experimental::optional<int> error = std::experimental::nullopt,
+        const std::string &defaultMessage = "Unknown error.");
 }
 }
 

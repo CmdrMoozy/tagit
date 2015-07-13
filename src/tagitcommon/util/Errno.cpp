@@ -26,7 +26,7 @@ namespace tagit
 {
 namespace util
 {
-std::string getErrnoError(boost::optional<int> error,
+std::string getErrnoError(std::experimental::optional<int> error,
                           const std::string &defaultMessage)
 {
 	if(!error)
@@ -38,7 +38,7 @@ std::string getErrnoError(boost::optional<int> error,
 	return std::string(strerror_r(*error, buf, 1024));
 }
 
-void throwErrnoError(boost::optional<int> error,
+void throwErrnoError(std::experimental::optional<int> error,
                      const std::string &defaultMessage)
 {
 	throw std::runtime_error(getErrnoError(error, defaultMessage));
