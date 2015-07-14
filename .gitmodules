@@ -4,3 +4,6 @@
 [submodule "3rdparty/mapbox_variant"]
 	path = 3rdparty/mapbox_variant
 	url = https://github.com/mapbox/variant.git
+[submodule "3rdparty/meta"]
+	path = 3rdparty/meta
+	url = https://github.com/ericniebler/meta.git
